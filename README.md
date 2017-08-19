@@ -1,0 +1,2 @@
+# YUCC - Your UpCloud CLI
+
