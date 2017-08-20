@@ -21,8 +21,7 @@ def parse_arguments():
     
     return args
 
-
-def main():
+def cli_main():
     args = parse_arguments()
     logger = Logger(args.log_level)
     logger.debug('Arguments: ' + str(args))
@@ -43,4 +42,13 @@ def main():
     logger.normal()
     for zone in zones:
         logger.normal(zone['id'] + ' ' + zone['description'])
+
+
+def main():
+    logger = Logger()
+    try:
+        cli_main()
+    except:
+        logger.critical('Critical unhandled error encountered!')
+
 

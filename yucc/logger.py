@@ -1,16 +1,16 @@
 from colorama import Style, Fore
 
 class LogLevel:
+    CRIT = -2
+    ERROR = -1
     NORMAL = 0
-    CRIT = 1
-    ERROR = 2
-    WARN = 3
-    INFO = 4
-    DEBUG = 5
+    WARN = 2
+    INFO = 3
+    DEBUG = 4
 
 
 class Logger:
-    def __init__(self, log_level):
+    def __init__(self, log_level = LogLevel.NORMAL):
         self.log_level = log_level
 
     def debug(self, msg):
@@ -29,9 +29,12 @@ class Logger:
         if self.log_level >= LogLevel.ERROR:
             print Fore.RED + '==> ' + msg + Fore.RESET
 
-    def critical(self, msg):
+    def critical(self, msg, bright = True):
         if self.log_level >= LogLevel.CRIT:
-            print Style.BRIGHT + Fore.RED + '==> ' + msg + Fore.RESET + Style.RESET_ALL
+            if bright:
+                print Style.BRIGHT + Fore.RED + '==> ' + msg + Fore.RESET + Style.RESET_ALL
+            else:
+                print Fore.RED + '==> ' + msg + Fore.RESET
 
     def normal(self, msg = ''): # for normal output information
         print msg
