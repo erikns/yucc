@@ -4,9 +4,9 @@ class LogLevel:
     CRIT = -2
     ERROR = -1
     NORMAL = 0
-    WARN = 2
-    INFO = 3
-    DEBUG = 4
+    WARN = 1
+    INFO = 2
+    DEBUG = 3
 
 
 class Logger:

@@ -5,9 +5,9 @@ import argparse
 from .config import read_credentials
 from .logger import Logger, LogLevel
 from . import __version__
+from commands import Zones
 
-
-class CliParser:
+class Cli:
     def __init__(self):
         parser = argparse.ArgumentParser(description='UpCloud CLI')
         parser.add_argument('-v', '--verbose', action = 'count', 
@@ -17,34 +17,32 @@ class CliParser:
                 dest = 'show_version', default = False,
                 help = 'print version information and exit')
 
+        parser.add_argument('command', 
+                help = 'Subcommand to run',
+                choices = ['server', 'zones'])
+
         self.args = parser.parse_args()
         self.args.log_level = LogLevel.ERROR + self.args.log_level
+        Logger(self.args.log_level).debug(str(self.args))
+        self.creds = read_credentials()
 
+        if self.args.show_version:
+            Logger().normal('yucc-cli version ' + __version__)
+            exit(0)
 
-def cli_main():
-    args = CliParser().args
-    logger = Logger(args.log_level)
-    logger.debug('Arguments: ' + str(args))
-    if args.show_version:
-        logger.normal('yucc-cli version ' + __version__)
-        exit(0)
+        getattr(self, self.args.command)()
 
-    logger.debug('Reading credentials from preference file')
-    creds = read_credentials()
+    def server(self):
+        logger = Logger(self.args.log_level)
+        logger.critical('Command not implemented')
+        exit(1)
 
-    logger.debug('Injecting credentials')
-    manager = upcloud_api.CloudManager(creds['username'], creds['password'])
-
-    logger.debug('Collecting zones...')
-    zones = manager.get_zones()['zones']['zone']
-    logger.debug('Zones collected')
-
-    logger.normal()
-    for zone in zones:
-        logger.normal(zone['id'] + ' ' + zone['description'])
+    def zones(self):
+        zones = Zones(self.args, self.creds)
+        zones.run()
 
 
 def main():
-    cli_main()
+    Cli()
 
 
