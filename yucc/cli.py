@@ -5,6 +5,7 @@ Usage:
     yucc server inspect <id> [options]
     yucc templates [options]
     yucc zones [options]
+    yucc account
     yucc [options]
 
 Options:
@@ -21,6 +22,7 @@ Commands:
     server          Manage servers
     templates       List available public templates
     zones           List available zones
+    account         Get basic account information
 
 Server subcommands:
     ls              List all servers
@@ -33,6 +35,7 @@ from docopt import docopt
 from . import __version__, __prog__
 from commands import Zones
 from commands import Templates
+from commands import Account
 from .logger import LogLevel, Logger
 from .config import read_credentials
 
@@ -57,6 +60,11 @@ def run_templates(args):
     templates.run()
 
 
+def run_account(args):
+    account = Account(determine_log_level(args), read_credentials())
+    account.run()
+
+
 def main():
     args = docopt(__doc__)
     if args['--debug']:
@@ -71,6 +79,8 @@ def main():
         run_zones(args)
     elif args['templates']:
         run_templates(args)
+    elif args['account']:
+        run_account(args)
     else:
         Logger(LogLevel.CRIT).critical('Command not implemented')
         exit(1)
