@@ -7,22 +7,22 @@ from .logger import Logger, LogLevel
 from . import __version__
 
 
-def parse_arguments():
-    parser = argparse.ArgumentParser(description='UpCloud CLI')
-    parser.add_argument('-v', '--verbose', action = 'count', 
-            dest = 'log_level', default = 0,
-            help = 'be more verbose in logging')
-    parser.add_argument('--version', action = 'store_true',
-            dest = 'show_version', default = False,
-            help = 'print version information and exit')
+class CliParser:
+    def __init__(self):
+        parser = argparse.ArgumentParser(description='UpCloud CLI')
+        parser.add_argument('-v', '--verbose', action = 'count', 
+                dest = 'log_level', default = 0,
+                help = 'be more verbose in logging')
+        parser.add_argument('--version', action = 'store_true',
+                dest = 'show_version', default = False,
+                help = 'print version information and exit')
 
-    args = parser.parse_args()
-    args.log_level = LogLevel.ERROR + args.log_level
-    
-    return args
+        self.args = parser.parse_args()
+        self.args.log_level = LogLevel.ERROR + self.args.log_level
+
 
 def cli_main():
-    args = parse_arguments()
+    args = CliParser().args
     logger = Logger(args.log_level)
     logger.debug('Arguments: ' + str(args))
     if args.show_version:
