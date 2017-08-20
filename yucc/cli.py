@@ -45,10 +45,6 @@ def cli_main():
 
 
 def main():
-    logger = Logger()
-    try:
-        cli_main()
-    except:
-        logger.critical('Critical unhandled error encountered!')
+    cli_main()
 
 
