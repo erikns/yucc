@@ -1,48 +1,77 @@
-import upcloud_api
-from upcloud_api import ZONE
-import argparse
+"""UpCloud CLI.
 
-from .config import read_credentials
-from .logger import Logger, LogLevel
-from . import __version__
+Usage:
+    yucc server ls [options] [-t <tags>...]
+    yucc server inspect <id> [options]
+    yucc templates [options]
+    yucc zones [options]
+    yucc [options]
+
+Options:
+    -p, --profile=<profile>   Settings profile to use. Read from
+                              ~/.yaccrc file. [default: ~/.yaccrc]
+    -t, --tags                Filter on or set tags
+    -q, --quiet               Be silent. Only output essential data
+    -h, --help                Show this helpscreen and exit
+    -v, --verbose             Verbose output
+    --debug                   Output debugging information
+    --version                 Print version and exit
+
+Commands:
+    server          Manage servers
+    templates       List available public templates
+    zones           List available zones
+
+Server subcommands:
+    ls              List all servers
+    inspect         Show server details
+
+"""
+
+from docopt import docopt
+
+from . import __version__, __prog__
 from commands import Zones
+from commands import Templates
+from .logger import LogLevel, Logger
+from .config import read_credentials
 
-class Cli:
-    def __init__(self):
-        parser = argparse.ArgumentParser(description='UpCloud CLI')
-        parser.add_argument('-v', '--verbose', action = 'count', 
-                dest = 'log_level', default = 0,
-                help = 'be more verbose in logging')
-        parser.add_argument('--version', action = 'store_true',
-                dest = 'show_version', default = False,
-                help = 'print version information and exit')
+def determine_log_level(args):
+    level = LogLevel.ERROR
+    if args['--quiet']:
+        level = LogLevel.NORMAL
+    if args['--verbose']:
+        level = LogLevel.INFO
+    if args['--debug']:
+        level = LogLevel.DEBUG
+    return level
 
-        parser.add_argument('command', 
-                help = 'Subcommand to run',
-                choices = ['server', 'zones'])
 
-        self.args = parser.parse_args()
-        self.args.log_level = LogLevel.ERROR + self.args.log_level
-        Logger(self.args.log_level).debug(str(self.args))
-        self.creds = read_credentials()
+def run_zones(args):
+    zones = Zones(determine_log_level(args), read_credentials())
+    zones.run()
 
-        if self.args.show_version:
-            Logger().normal('yucc-cli version ' + __version__)
-            exit(0)
 
-        getattr(self, self.args.command)()
-
-    def server(self):
-        logger = Logger(self.args.log_level)
-        logger.critical('Command not implemented')
-        exit(1)
-
-    def zones(self):
-        zones = Zones(self.args, self.creds)
-        zones.run()
+def run_templates(args):
+    templates = Templates(determine_log_level(args), read_credentials())
+    templates.run()
 
 
 def main():
-    Cli()
+    args = docopt(__doc__)
+    if args['--debug']:
+        print args 
+        print ''
 
+    if args['--version']:
+        print __prog__, 'version', __version__
+        exit(0)
+
+    if args['zones']:
+        run_zones(args)
+    elif args['templates']:
+        run_templates(args)
+    else:
+        Logger(LogLevel.CRIT).critical('Command not implemented')
+        exit(1)
 

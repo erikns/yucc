@@ -2,8 +2,8 @@ import upcloud_api
 from ..logger import Logger
 
 class Zones:
-    def __init__(self, args, creds = {}):
-        self.logger = Logger(args.log_level)
+    def __init__(self, log_level, creds):
+        self.logger = Logger(log_level)
         self.creds = creds
 
     def run(self):
