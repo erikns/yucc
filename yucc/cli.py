@@ -10,6 +10,8 @@ Usage:
 Options:
     -p, --profile=<profile>   Settings profile to use. Read from
                               ~/.yaccrc file. [default: ~/.yaccrc]
+    -P, --prompt-credentials  Prompt for credentials rather than reading
+                              them from profile
     -t, --tags                Filter on or set tags
     -q, --quiet               Be silent. Only output essential data
     -h, --help                Show this helpscreen and exit
@@ -43,19 +45,26 @@ def determine_log_level(args):
     return level
 
 
-def run_ls_zones(args):
-    zones = Zones(determine_log_level(args), read_credentials())
+def run_ls_zones(args, creds):
+    zones = Zones(determine_log_level(args), creds)
     zones.run()
 
 
-def run_ls_templates(args):
-    templates = Templates(determine_log_level(args), read_credentials())
+def run_ls_templates(args, creds):
+    templates = Templates(determine_log_level(args), creds)
     templates.run()
 
 
-def run_account(args):
-    account = Account(determine_log_level(args), read_credentials())
+def run_account(args, creds):
+    account = Account(determine_log_level(args), creds)
     account.run()
+
+
+def credentials_prompt():
+    import getpass
+    username = raw_input('Username: ')
+    password = getpass.getpass('Password: ')
+    return {'username': username, 'password': password}
 
 
 def main():
@@ -69,11 +78,17 @@ def main():
         exit(0)
 
     logger = Logger(LogLevel.ERROR)
+    creds = {}
+    if args['--prompt-credentials']:
+        creds = credentials_prompt()
+    else:
+        creds = read_credentials()
+
     if args['ls']:
         if args['zones']:
-            run_ls_zones(args)
+            run_ls_zones(args, creds)
         elif args['templates']:
-            run_ls_templates(args)
+            run_ls_templates(args, creds)
         elif args['servers']:
             logger.critical('Command for listing servers is not yet implemented')
             exit(1)
@@ -82,7 +97,7 @@ def main():
                     'command `ls`')
             exit(1)
     elif args['account']:
-        run_account(args)
+        run_account(args, creds)
     else:
         logger.critical('Command given is unknown')
         exit(1)
