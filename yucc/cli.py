@@ -28,9 +28,7 @@ Commands:
 from docopt import docopt
 
 from . import __version__, __prog__
-from commands import Zones
-from commands import Templates
-from commands import Account
+from commands import Zones, Templates, Account, Servers
 from .logger import LogLevel, Logger
 from .config import read_credentials
 
@@ -56,6 +54,14 @@ def run_ls_zones(args, creds):
 def run_ls_templates(args, creds):
     templates = Templates(determine_log_level(args), creds)
     if templates.run():
+        exit(0)
+    else:
+        exit(1)
+
+
+def run_ls_servers(args, creds):
+    servers = Servers(determine_log_level(args), creds)
+    if servers.run():
         exit(0)
     else:
         exit(1)
@@ -99,8 +105,7 @@ def main():
         elif args['templates']:
             run_ls_templates(args, creds)
         elif args['servers']:
-            logger.critical('Command for listing servers is not yet implemented')
-            exit(1)
+            run_ls_servers(args, creds)
         else:
             logger.critical('Unknown resource type given to ' +
                     'command `ls`')
