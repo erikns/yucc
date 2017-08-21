@@ -17,3 +17,5 @@ class Account:
             self.logger.normal("Credits:  ${0:.2f}".format(account['credits'] /
                 100))
 
+        return True
+

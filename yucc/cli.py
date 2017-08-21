@@ -47,17 +47,26 @@ def determine_log_level(args):
 
 def run_ls_zones(args, creds):
     zones = Zones(determine_log_level(args), creds)
-    zones.run()
+    if zones.run():
+        exit(0)
+    else:
+        exit(1)
 
 
 def run_ls_templates(args, creds):
     templates = Templates(determine_log_level(args), creds)
-    templates.run()
+    if templates.run():
+        exit(0)
+    else:
+        exit(1)
 
 
 def run_account(args, creds):
     account = Account(determine_log_level(args), creds)
-    account.run()
+    if account.run():
+        exit(0)
+    else:
+        exit(1)
 
 
 def credentials_prompt():

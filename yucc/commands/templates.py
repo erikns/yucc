@@ -16,3 +16,5 @@ class Templates:
         storages = storages_response.json()['storages']['storage']
         output('template', storages)
 
+        return True
+
