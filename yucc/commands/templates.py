@@ -14,5 +14,5 @@ class Templates:
             self.creds['password']))
         storages = storages_response.json()['storages']['storage']
         for storage in storages:
-            self.logger.normal(storage['uuid'] + ' ' + storage['title'])
+            self.logger.normal(storage['uuid'] + '  ' + storage['title'])
 

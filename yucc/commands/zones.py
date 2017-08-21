@@ -15,5 +15,5 @@ class Zones:
 
         self.logger.normal()
         for zone in zones:
-            self.logger.normal(zone['id'] + ' ' + zone['description'])
+            self.logger.normal(zone['id'] + '  ' + zone['description'])
 
