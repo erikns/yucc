@@ -4,7 +4,7 @@ Usage:
     yucc ls servers [options] [-t <tags>...]
     yucc ls templates [options]
     yucc ls zones [options]
-    yucc account
+    yucc account [options]
     yucc [options]
 
 Options:
