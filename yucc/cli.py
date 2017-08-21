@@ -1,10 +1,9 @@
 """UpCloud CLI.
 
 Usage:
-    yucc server ls [options] [-t <tags>...]
-    yucc server inspect <id> [options]
-    yucc templates [options]
-    yucc zones [options]
+    yucc ls servers [options] [-t <tags>...]
+    yucc ls templates [options]
+    yucc ls zones [options]
     yucc account
     yucc [options]
 
@@ -19,14 +18,8 @@ Options:
     --version                 Print version and exit
 
 Commands:
-    server          Manage servers
-    templates       List available public templates
-    zones           List available zones
-    account         Get basic account information
-
-Server subcommands:
-    ls              List all servers
-    inspect         Show server details
+    ls                        List resources
+    account                   Show basic account information
 
 """
 
@@ -50,12 +43,12 @@ def determine_log_level(args):
     return level
 
 
-def run_zones(args):
+def run_ls_zones(args):
     zones = Zones(determine_log_level(args), read_credentials())
     zones.run()
 
 
-def run_templates(args):
+def run_ls_templates(args):
     templates = Templates(determine_log_level(args), read_credentials())
     templates.run()
 
@@ -75,13 +68,22 @@ def main():
         print __prog__, 'version', __version__
         exit(0)
 
-    if args['zones']:
-        run_zones(args)
-    elif args['templates']:
-        run_templates(args)
+    logger = Logger(LogLevel.ERROR)
+    if args['ls']:
+        if args['zones']:
+            run_ls_zones(args)
+        elif args['templates']:
+            run_ls_templates(args)
+        elif args['servers']:
+            logger.critical('Command for listing servers is not yet implemented')
+            exit(1)
+        else:
+            logger.critical('Unknown resource type given to ' +
+                    'command `ls`')
+            exit(1)
     elif args['account']:
         run_account(args)
     else:
-        Logger(LogLevel.CRIT).critical('Command not implemented')
+        logger.critical('Command given is unknown')
         exit(1)
 
