@@ -1,5 +1,6 @@
 import requests
 from ..logger import Logger
+from ..outputter import output
 
 # This is hacked in as the python SDK didn't have this feature
 class Templates:
@@ -13,6 +14,5 @@ class Templates:
         storages_response = requests.get(self.API_ENDPOINT, auth=(self.creds['username'], 
             self.creds['password']))
         storages = storages_response.json()['storages']['storage']
-        for storage in storages:
-            self.logger.normal(storage['uuid'] + '  ' + storage['title'])
+        output('template', storages)
 

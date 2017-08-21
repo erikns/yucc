@@ -1,5 +1,6 @@
 import upcloud_api
 from ..logger import Logger
+from ..outputter import output
 
 class Zones:
     def __init__(self, log_level, creds):
@@ -13,7 +14,5 @@ class Zones:
         zones = manager.get_zones()['zones']['zone']
         self.logger.debug('Zones collected')
 
-        self.logger.normal()
-        for zone in zones:
-            self.logger.normal(zone['id'] + '  ' + zone['description'])
+        output('zone', zones)
 
