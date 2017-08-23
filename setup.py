@@ -27,7 +27,7 @@ setup(
     extras_require = {},
     entry_points = {
         'console_scripts': [
-            'yucc-cli=yucc.cli:main',
+            'yucc=yucc.cli:main',
         ],
     }
 )
