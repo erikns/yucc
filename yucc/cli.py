@@ -20,7 +20,7 @@ Options:
     --version                 Print version and exit
 
 Commands:
-    ls                        List resources
+    ls                        List resources (servers, templates, zones)
     account                   Show basic account information
 
 """
