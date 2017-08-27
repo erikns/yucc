@@ -1,4 +1,4 @@
 from .zones import list_zones
-from .templates import Templates
+from .templates import list_templates
 from .account import show_account_info
-from .servers import Servers
+from .servers import list_servers
