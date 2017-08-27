@@ -1,7 +1,7 @@
 import ConfigParser
 import os
 
-def map_section(config, section):
+def _map_section(config, section):
     res = {}
     options = config.options(section)
     for option in options:
@@ -11,10 +11,9 @@ def map_section(config, section):
             print "Error!"
     return res
 
-def read_credentials():
+def read_config():
     config = ConfigParser.RawConfigParser()
     config.read(os.path.join(os.path.expanduser('~'), '.yuccrc'))
-    creds = map_section(config, 'default')
+    creds = _map_section(config, 'default')
     return {'username': creds['username'],
             'password': creds['password']}
-

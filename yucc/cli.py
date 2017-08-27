@@ -30,7 +30,7 @@ from docopt import docopt
 from . import __version__, __prog__
 from commands import Zones, Templates, Account, Servers
 from .logger import LogLevel, Logger
-from .config import read_credentials
+from .config import read_config
 
 def determine_log_level(args):
     level = LogLevel.ERROR
@@ -85,7 +85,7 @@ def credentials_prompt():
 def main():
     args = docopt(__doc__)
     if args['--debug']:
-        print args 
+        print args
         print ''
 
     if args['--version']:
@@ -97,7 +97,7 @@ def main():
     if args['--prompt-credentials']:
         creds = credentials_prompt()
     else:
-        creds = read_credentials()
+        creds = read_config()
 
     if args['ls']:
         if args['zones']:
@@ -115,4 +115,3 @@ def main():
     else:
         logger.critical('Command given is unknown')
         exit(1)
-
