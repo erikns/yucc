@@ -76,6 +76,10 @@ def main():
     else:
         config = read_config(read_creds=True)
 
+    if args['--profile'] != '~/.yaccrc':
+        logger.critical('yucc does not yet support changing the profile file')
+        exit(1)
+
     if args['ls']:
         if args['zones']:
             command = get_command('ls_zones')
