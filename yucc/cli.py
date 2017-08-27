@@ -5,6 +5,7 @@ Usage:
     yucc ls templates [options]
     yucc ls zones [options]
     yucc account [options]
+    yucc profile [options]
     yucc [options]
 
 Options:
@@ -22,13 +23,14 @@ Options:
 Commands:
     ls                        List resources (servers, templates, zones)
     account                   Show basic account information
+    profile                   Dump profile information
 
 """
 
 from docopt import docopt
 
 from . import __version__, __prog__
-from commands import list_zones, list_templates, show_account_info, list_servers
+from commands import *
 from .logger import LogLevel, Logger
 from .config import read_config
 
@@ -47,7 +49,8 @@ def get_command(cmd):
         'ls_zones': list_zones,
         'ls_templates': list_templates,
         'ls_servers': list_servers,
-        'account': show_account_info
+        'account': show_account_info,
+        'profile': dump_profile_info
     }
     return cmds[cmd]
 
@@ -97,6 +100,8 @@ def main():
             exit(1)
     elif args['account']:
         command = get_command('account')
+    elif args['profile']:
+        command = get_command('profile')
     else:
         logger.critical('Command given is unknown')
         exit(1)
