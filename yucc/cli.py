@@ -28,7 +28,7 @@ Commands:
 from docopt import docopt
 
 from . import __version__, __prog__
-from commands import Zones, Templates, Account, Servers
+from commands import Zones, Templates, show_account_info, Servers
 from .logger import LogLevel, Logger
 from .config import read_config
 
@@ -68,8 +68,7 @@ def run_ls_servers(args, creds):
 
 
 def run_account(args, creds):
-    account = Account(determine_log_level(args), creds)
-    if account.run():
+    if show_account_info(Logger(determine_log_level(args)), creds):
         exit(0)
     else:
         exit(1)

@@ -2,27 +2,22 @@ import requests
 import upcloud_api
 
 from ..logger import Logger
-from .common import upcloud_api_call
+from .common import upcloud_api_call_func
 
-class Account:
-    API_ENDPOINT = 'https://api.upcloud.com/1.2/account'
+API_ENDPOINT = 'https://api.upcloud.com/1.2/account'
 
-    def __init__(self, log_level, creds):
-        self.logger = Logger(log_level)
-        self.creds = creds
-
-    @upcloud_api_call
-    def run(self):
-        account_response = requests.get(self.API_ENDPOINT,
-                auth=(self.creds['username'], self.creds['password']))
-        if not account_response.ok:
-            raise upcloud_api.errors.UpCloudAPIError('AUTHENTICATION_FAILED',
-                    'Authentication error')
-        account = account_response.json()['account']
-        self.logger.normal('Username: ' + account['username'])
-        if 'credits' in account:
-            self.logger.normal("Credits:  ${0:.2f}".format(account['credits'] /
-                100))
-        else:
-            self.logger.info("No credits information in output." +
-                " Do you have billing access?")
+@upcloud_api_call_func
+def show_account_info(logger, creds):
+    account_response = requests.get(API_ENDPOINT,
+            auth=(creds['username'], creds['password']))
+    if not account_response.ok:
+        raise upcloud_api.errors.UpCloudAPIError('AUTHENTICATION_FAILED',
+                'Authentication error')
+    account = account_response.json()['account']
+    logger.normal('Username: ' + account['username'])
+    if 'credits' in account:
+        logger.normal("Credits:  ${0:.2f}".format(account['credits'] /
+            100))
+    else:
+        logger.info("No credits information in output." +
+            " Do you have billing access?")
