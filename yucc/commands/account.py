@@ -23,4 +23,6 @@ class Account:
         if 'credits' in account:
             self.logger.normal("Credits:  ${0:.2f}".format(account['credits'] /
                 100))
-
+        else:
+            self.logger.info("No credits information in output." +
+                " Do you have billing access?")
