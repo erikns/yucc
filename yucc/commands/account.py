@@ -2,11 +2,11 @@ import requests
 import upcloud_api
 
 from ..logger import Logger
-from .common import upcloud_api_call_func
+from .common import upcloud_api_call
 
 API_ENDPOINT = 'https://api.upcloud.com/1.2/account'
 
-@upcloud_api_call_func
+@upcloud_api_call
 def show_account_info(logger, creds):
     account_response = requests.get(API_ENDPOINT,
             auth=(creds['username'], creds['password']))

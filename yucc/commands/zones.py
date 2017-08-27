@@ -1,9 +1,9 @@
 import upcloud_api
 from ..logger import Logger
 from ..outputter import output
-from .common import upcloud_api_call_func
+from .common import upcloud_api_call
 
-@upcloud_api_call_func
+@upcloud_api_call
 def list_zones(logger, creds):
     manager = upcloud_api.CloudManager(creds['username'], creds['password'])
 
