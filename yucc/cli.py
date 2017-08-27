@@ -28,7 +28,7 @@ Commands:
 from docopt import docopt
 
 from . import __version__, __prog__
-from commands import Zones, Templates, show_account_info, Servers
+from commands import list_zones, Templates, show_account_info, Servers
 from .logger import LogLevel, Logger
 from .config import read_config
 
@@ -44,8 +44,7 @@ def determine_log_level(args):
 
 
 def run_ls_zones(args, creds):
-    zones = Zones(determine_log_level(args), creds)
-    if zones.run():
+    if list_zones(Logger(determine_log_level(args)), creds):
         exit(0)
     else:
         exit(1)
