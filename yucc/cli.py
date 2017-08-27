@@ -67,7 +67,7 @@ def main():
         print __prog__, 'version', __version__
         exit(0)
 
-    logger = Logger(LogLevel.ERROR)
+    logger = Logger(LogLevel.WARN)
     if args['--prompt-credentials']:
         config = read_config()
         creds = credentials_prompt()
@@ -75,6 +75,10 @@ def main():
         config['password'] = creds['password']
     else:
         config = read_config(read_creds=True)
+
+    if not config.get('default_zone'):
+        logger.warning('You have not set a default deployment zone. It will' +
+            ' need to be provided.')
 
     if args['--profile'] != '~/.yaccrc':
         logger.critical('yucc does not yet support changing the profile file')

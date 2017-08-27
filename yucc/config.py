@@ -18,8 +18,14 @@ def read_config(**kwargs):
     config.read(os.path.join(os.path.expanduser('~'), '.yuccrc'))
     default_profile = _map_section(config, 'default')
 
+    if default_profile.get('default_zone'):
+        default_zone = default_profile['default_zone']
+    else:
+        default_zone = None
+
     if read_creds:
         return {'username': default_profile['username'],
-                'password': default_profile['password']}
+                'password': default_profile['password'],
+                'default_zone' : default_zone}
     else:
-        return {}
+        return {'default_zone': default_zone}
