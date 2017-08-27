@@ -11,9 +11,15 @@ def _map_section(config, section):
             print "Error!"
     return res
 
-def read_config():
+def read_config(**kwargs):
+    read_creds = kwargs.get('read_creds', True)
+
     config = ConfigParser.RawConfigParser()
     config.read(os.path.join(os.path.expanduser('~'), '.yuccrc'))
-    creds = _map_section(config, 'default')
-    return {'username': creds['username'],
-            'password': creds['password']}
+    default_profile = _map_section(config, 'default')
+
+    if read_creds:
+        return {'username': default_profile['username'],
+                'password': default_profile['password']}
+    else:
+        return {}

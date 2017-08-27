@@ -93,25 +93,27 @@ def main():
         exit(0)
 
     logger = Logger(LogLevel.ERROR)
-    creds = {}
     if args['--prompt-credentials']:
+        config = read_config()
         creds = credentials_prompt()
+        config['username'] = creds['username']
+        config['password'] = creds['password']
     else:
-        creds = read_config()
+        config = read_config(read_creds=True)
 
     if args['ls']:
         if args['zones']:
-            run_ls_zones(args, creds)
+            run_ls_zones(args, config)
         elif args['templates']:
-            run_ls_templates(args, creds)
+            run_ls_templates(args, config)
         elif args['servers']:
-            run_ls_servers(args, creds)
+            run_ls_servers(args, config)
         else:
             logger.critical('Unknown resource type given to ' +
                     'command `ls`')
             exit(1)
     elif args['account']:
-        run_account(args, creds)
+        run_account(args, config)
     else:
         logger.critical('Command given is unknown')
         exit(1)
