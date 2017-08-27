@@ -42,41 +42,20 @@ def determine_log_level(args):
         level = LogLevel.DEBUG
     return level
 
-
-def run_ls_zones(args, creds):
-    if list_zones(Logger(determine_log_level(args)), creds):
-        exit(0)
-    else:
-        exit(1)
-
-
-def run_ls_templates(args, creds):
-    if list_templates(Logger(determine_log_level(args)), creds):
-        exit(0)
-    else:
-        exit(1)
-
-
-def run_ls_servers(args, creds):
-    if list_servers(Logger(determine_log_level(args)), creds):
-        exit(0)
-    else:
-        exit(1)
-
-
-def run_account(args, creds):
-    if show_account_info(Logger(determine_log_level(args)), creds):
-        exit(0)
-    else:
-        exit(1)
-
+def get_command(cmd):
+    cmds = {
+        'ls_zones': list_zones,
+        'ls_templates': list_templates,
+        'ls_servers': list_servers,
+        'account': show_account_info
+    }
+    return cmds[cmd]
 
 def credentials_prompt():
     import getpass
     username = raw_input('Username: ')
     password = getpass.getpass('Password: ')
     return {'username': username, 'password': password}
-
 
 def main():
     args = docopt(__doc__)
@@ -99,17 +78,21 @@ def main():
 
     if args['ls']:
         if args['zones']:
-            run_ls_zones(args, config)
+            command = get_command('ls_zones')
         elif args['templates']:
-            run_ls_templates(args, config)
+            command = get_command('ls_templates')
         elif args['servers']:
-            run_ls_servers(args, config)
+            command = get_command('ls_servers')
         else:
             logger.critical('Unknown resource type given to ' +
                     'command `ls`')
             exit(1)
     elif args['account']:
-        run_account(args, config)
+        command = get_command('account')
     else:
         logger.critical('Command given is unknown')
+        exit(1)
+
+    logger = Logger(determine_log_level(args))
+    if not command(logger, config):
         exit(1)
