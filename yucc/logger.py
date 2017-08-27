@@ -38,5 +38,3 @@ class Logger:
 
     def normal(self, msg = ''): # for normal output information
         print msg
-
-
