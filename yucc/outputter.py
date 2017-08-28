@@ -7,6 +7,10 @@ def _format_from_kind(kind):
     elif kind == 'server':
         return lambda x: '{}  {}  {}  {}MB RAM  {}CPU  {}'.format(x.uuid, x.hostname, x.title,
                     x.memory_amount, x.core_number, x.state)
+    elif kind == 'plan':
+        return lambda x: '{}  {} CORES  {}MB RAM  {} GB {}  {} TRAFFIC'.format(x['name'],
+            x['core_number'], x['memory_amount'], x['storage_size'],
+            x['storage_tier'], x['public_traffic_out'])
     else:
         raise Error
 
@@ -14,4 +18,3 @@ def output(kind, data, **kwargs):
     fmt = _format_from_kind(kind)
     for row in data:
         print fmt(row)
-

@@ -7,6 +7,7 @@ Usage:
     yucc ls servers [options] [-t <tags>...]
     yucc ls templates [options]
     yucc ls zones [options]
+    yucc ls plans [options]
     yucc account [options]
     yucc profile [options]
     yucc [options]
@@ -24,7 +25,7 @@ Options:
     --version                 Print version and exit
 
 Commands:
-    ls                        List resources (servers, templates, zones)
+    ls                        List resources (servers, templates, zones, plans)
     account                   Show basic account information
     profile                   Dump profile information
 
@@ -52,6 +53,7 @@ def get_command(cmd):
         'ls_zones': list_zones,
         'ls_templates': list_templates,
         'ls_servers': list_servers,
+        'ls_plans': list_plans,
         'account': show_account_info,
         'profile': dump_profile_info
     }
@@ -98,6 +100,8 @@ def main():
             command = get_command('ls_templates')
         elif args['servers']:
             command = get_command('ls_servers')
+        elif args['plans']:
+            command = get_command('ls_plans')
         else:
             logger.critical('Unknown resource type given to ' +
                     'command `ls`')
