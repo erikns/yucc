@@ -1,6 +1,8 @@
 import ConfigParser
 import os
 
+config_path = os.path.join(os.path.expanduser('~'), '.yuccrc')
+
 def _map_section(config, section):
     res = {}
     options = config.options(section)
@@ -11,11 +13,18 @@ def _map_section(config, section):
             print "Error!"
     return res
 
+def verify_config_permissions(logger):
+    logger.debug("Verifying '{}' permissions...".format(config_path))
+    file_mode = str(oct(os.stat(config_path).st_mode)[-3:])
+    if file_mode != '600':
+        logger.warning("Config file has unsafe file permissions '{}'".format(file_mode))
+    else:
+        logger.info("Config file permissions are OK '{}'".format(file_mode))
+
 def read_config(**kwargs):
     read_creds = kwargs.get('read_creds', True)
     profile_name = kwargs.get('profile', 'default')
 
-    config_path = os.path.join(os.path.expanduser('~'), '.yuccrc')
     if not os.path.isfile(config_path):
         raise ValueError("No .yuccrc file found")
     config = ConfigParser.RawConfigParser()

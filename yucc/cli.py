@@ -35,12 +35,12 @@ from docopt import docopt
 from . import __version__, __prog__
 from commands import *
 from .logger import LogLevel, Logger
-from .config import read_config
+from .config import read_config, verify_config_permissions
 
 def determine_log_level(args):
-    level = LogLevel.ERROR
+    level = LogLevel.WARN
     if args['--quiet']:
-        level = LogLevel.NORMAL
+        level = LogLevel.ERROR
     if args['--verbose']:
         level = LogLevel.INFO
     if args['--debug']:
@@ -74,7 +74,8 @@ def main():
         exit(0)
 
     try:
-        logger = Logger(LogLevel.WARN)
+        logger = Logger(determine_log_level(args))
+        verify_config_permissions(logger)
         if args['--prompt-credentials']:
             config = read_config(profile=args['--profile'])
             creds = credentials_prompt()
