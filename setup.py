@@ -23,7 +23,7 @@ setup(
     ],
     keywords = 'cli upcloud',
     packages = find_packages(exclude=['docs', 'tests*']),
-    install_requires = ['upcloud-api', 'colorama', 'docopt'],
+    install_requires = ['upcloud-api', 'colorama', 'docopt', 'tabulate'],
     extras_require = {},
     entry_points = {
         'console_scripts': [
@@ -31,4 +31,3 @@ setup(
         ],
     }
 )
-
