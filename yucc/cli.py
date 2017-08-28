@@ -8,11 +8,21 @@ Usage:
     yucc ls templates [options]
     yucc ls zones [options]
     yucc ls plans [options]
+    yucc server create (--hostname=<hostname>) (--plan=<plan>)
+      (--login-user=<user> --ssh-key=<ssh-key>) [options]
     yucc account [options]
     yucc profile [options]
     yucc [options]
 
 Options:
+    --hostname=<hostname>     Hostname of a server
+    --title=<title>           Title of a server. If not set it will be the same
+                              as the hostname.
+    --plan=<plan>             Plan to use for the server
+    --login-user=<user>       The username to create on the server
+    --ssh-key=<ssh-key>       The ssh public key to deploy to the server
+    --zone=<zone>             The zone to deploy to. Default might be read from
+                              profile.
     -p, --profile=<profile>   Settings profile to use. Read from
                               ~/.yaccrc file. [default: default]
     -P, --prompt-credentials  Prompt for credentials rather than reading
@@ -54,6 +64,7 @@ def get_command(cmd):
         'ls_templates': list_templates,
         'ls_servers': list_servers,
         'ls_plans': list_plans,
+        'server_create': create_server,
         'account': show_account_info,
         'profile': dump_profile_info
     }
@@ -93,6 +104,8 @@ def main():
         logger.warning('You have not set a default deployment zone. It will' +
             ' need to be provided.')
 
+    command = None
+    extra_args = {}
     if args['ls']:
         if args['zones']:
             command = get_command('ls_zones')
@@ -110,10 +123,29 @@ def main():
         command = get_command('account')
     elif args['profile']:
         command = get_command('profile')
+    elif args['server']:
+        if args['create']:
+            command = get_command('server_create')
+            extra_args['hostname'] = args['--hostname']
+            extra_args['plan'] = args['--plan']
+            if not args.get('zone'):
+                zone = config.get('default_zone')
+                if not zone:
+                    logger.error('No default zone specified. You will have to ' +
+                       'provide it.')
+                    exit(1)
+            else:
+                zone = args['zone']
+            extra_args['zone'] = zone
+            extra_args['login_user'] = args['--login-user']
+            extra_args['ssh_key'] = args['--ssh-key']
+        else:
+            logger.critical('Unknown subcommand for server')
+            exit(1)
     else:
         logger.critical('Command given is unknown')
         exit(1)
 
-    logger = Logger(determine_log_level(args))
-    if not command(logger, config):
+    logger.debug('extra_args: ' + str(extra_args))
+    if not command(logger, config, **extra_args):
         exit(1)

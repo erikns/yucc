@@ -9,9 +9,9 @@ def api_get(resource, config):
 
 # API call decorator
 def upcloud_api_call(func):
-    def func_wrapper(logger, creds):
+    def func_wrapper(logger, creds, **kwargs):
         try:
-            func(logger, creds)
+            func(logger, creds, **kwargs)
         except upcloud_api.errors.UpCloudAPIError as error:
             if error.error_code == 'AUTHENTICATION_FAILED':
                 logger.error('Authentication failed')
@@ -20,6 +20,13 @@ def upcloud_api_call(func):
                 logger.error('Unknown error occurred: ' +
                         error.error_message)
                 _report_error_debug(logger, error)
+            return False
+        except ValueError as error:
+            logger.error(error.message)
+            return False
+        except Exception as error:
+            logger.debug(error.message)
+            logger.error('Unknown error occurred')
             return False
 
         return True
