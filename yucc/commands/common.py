@@ -1,4 +1,11 @@
 import upcloud_api
+import requests
+
+ROOT_API_ENDPOINT = 'https://api.upcloud.com/1.2'
+
+def api_get(resource, config):
+    return requests.get(ROOT_API_ENDPOINT + resource,
+        auth=(config['username'], config['password']))
 
 # API call decorator
 def upcloud_api_call(func):

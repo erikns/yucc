@@ -2,14 +2,13 @@ import requests
 import upcloud_api
 
 from ..logger import Logger
-from .common import upcloud_api_call
+from .common import upcloud_api_call, api_get
 
-API_ENDPOINT = 'https://api.upcloud.com/1.2/account'
+API_RESOURCE = '/account'
 
 @upcloud_api_call
 def show_account_info(logger, creds):
-    account_response = requests.get(API_ENDPOINT,
-            auth=(creds['username'], creds['password']))
+    account_response = api_get(API_RESOURCE, creds)
     if not account_response.ok:
         raise upcloud_api.errors.UpCloudAPIError('AUTHENTICATION_FAILED',
                 'Authentication error')
