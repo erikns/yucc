@@ -20,7 +20,8 @@ def read_config(**kwargs):
     try:
         profile = _map_section(config, profile_name)
     except ConfigParser.NoSectionError:
-        raise ValueError("No profile named '{}'".format(profile_name))
+        raise ValueError("No profile named '{}'. Choices are {}".format(profile_name,
+            config.sections()))
 
     if profile.get('default_zone'):
         default_zone = profile['default_zone']
