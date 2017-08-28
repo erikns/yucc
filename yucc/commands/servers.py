@@ -8,4 +8,8 @@ from ..outputter import output
 def list_servers(logger, creds):
     manager = upcloud_api.CloudManager(creds['username'], creds['password'])
     servers = manager.get_servers()
-    output('server', servers)
+    logger.debug(str(servers))
+    if len(servers) > 0:
+        output('server', servers)
+    else:
+        logger.info('There are no servers')
