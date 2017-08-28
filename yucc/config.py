@@ -15,8 +15,11 @@ def read_config(**kwargs):
     read_creds = kwargs.get('read_creds', True)
     profile_name = kwargs.get('profile', 'default')
 
+    config_path = os.path.join(os.path.expanduser('~'), '.yuccrc')
+    if not os.path.isfile(config_path):
+        raise ValueError("No .yuccrc file found")
     config = ConfigParser.RawConfigParser()
-    config.read(os.path.join(os.path.expanduser('~'), '.yuccrc'))
+    config.read(config_path)
     try:
         profile = _map_section(config, profile_name)
     except ConfigParser.NoSectionError:
