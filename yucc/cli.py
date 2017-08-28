@@ -1,4 +1,7 @@
-"""UpCloud CLI.
+# -*- coding: utf-8 -*-
+"""yucc - Your UpCloud CLI.
+
+Copyright (C) Erik Sørensen, 2017.
 
 Usage:
     yucc ls servers [options] [-t <tags>...]
