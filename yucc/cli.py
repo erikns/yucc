@@ -15,29 +15,30 @@ Usage:
     yucc [options]
 
 Options:
-    --hostname=<hostname>     Hostname of a server
-    --title=<title>           Title of a server. If not set it will be the same
-                              as the hostname.
-    --plan=<plan>             Plan to use for the server
-    --login-user=<user>       The username to create on the server
-    --ssh-key=<ssh-key>       The ssh public key to deploy to the server
-    --zone=<zone>             The zone to deploy to. Default might be read from
-                              profile.
-    -p, --profile=<profile>   Settings profile to use. Read from
-                              ~/.yaccrc file. [default: default]
-    -P, --prompt-credentials  Prompt for credentials rather than reading
-                              them from profile
-    -t, --tags                Filter on or set tags
-    -q, --quiet               Be silent. Only output essential data
-    -h, --help                Show this helpscreen and exit
-    -v, --verbose             Verbose output
-    --debug                   Output debugging information
-    --version                 Print version and exit
+    --hostname=<hostname>      Hostname of a server
+    --title=<title>            Title of a server. If not set it will be the same
+                               as the hostname.
+    --plan=<plan>              Plan to use for the server
+    --login-user=<user>        The username to create on the server
+    --ssh-key=<ssh-key>        The ssh public key to deploy to the server
+    --zone=<zone>              The zone to deploy to. Default might be read from
+                               profile.
+    -f, --format=<format>      Program output format. [default: table]
+    -p, --profile=<profile>    Settings profile to use. Read from
+                               ~/.yaccrc file. [default: default]
+    -P, --prompt-credentials   Prompt for credentials rather than reading
+                               them from profile
+    -t, --tags                 Filter on or set tags
+    -q, --quiet                Be silent. Only output essential data
+    -h, --help                 Show this helpscreen and exit
+    -v, --verbose              Verbose output
+    --debug                    Output debugging information
+    --version                  Print version and exit
 
 Commands:
-    ls                        List resources (servers, templates, zones, plans)
-    account                   Show basic account information
-    profile                   Dump profile information
+    ls                         List resources (servers, templates, zones, plans)
+    account                    Show basic account information
+    profile                    Dump profile information
 
 """
 
@@ -105,7 +106,8 @@ def main():
             ' need to be provided.')
 
     command = None
-    extra_args = {}
+    extra_args = {'format': args['--format']}
+
     if args['ls']:
         if args['zones']:
             command = get_command('ls_zones')

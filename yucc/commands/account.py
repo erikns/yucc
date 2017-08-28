@@ -7,7 +7,7 @@ from .common import upcloud_api_call, api_get
 API_RESOURCE = '/account'
 
 @upcloud_api_call
-def show_account_info(logger, creds):
+def show_account_info(logger, creds, **kwargs):
     account_response = api_get(API_RESOURCE, creds)
     if not account_response.ok:
         raise upcloud_api.errors.UpCloudAPIError('AUTHENTICATION_FAILED',

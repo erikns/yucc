@@ -5,7 +5,7 @@ from ..logger import Logger
 from ..outputter import output
 
 @upcloud_api_call
-def list_servers(logger, creds):
+def list_servers(logger, creds, **kwargs):
     manager = upcloud_api.CloudManager(creds['username'], creds['password'])
     servers = manager.get_servers()
     logger.debug(str(servers))

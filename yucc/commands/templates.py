@@ -9,7 +9,7 @@ from .common import upcloud_api_call, api_get
 API_RESOURCE = '/storage/template'
 
 @upcloud_api_call
-def list_templates(logger, creds):
+def list_templates(logger, creds, **kwargs):
     storages_response = api_get(API_RESOURCE, creds)
     if not storages_response.ok:
         raise upcloud_api.errors.UpCloudAPIError('AUTHENTICATION_FAILED',

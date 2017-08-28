@@ -2,6 +2,7 @@ import upcloud_api
 import requests
 
 ROOT_API_ENDPOINT = 'https://api.upcloud.com/1.2'
+DEFAULT_OUTPUT_FORMAT = 'table'
 
 def api_get(resource, config):
     return requests.get(ROOT_API_ENDPOINT + resource,

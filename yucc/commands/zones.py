@@ -4,7 +4,7 @@ from ..outputter import output
 from .common import upcloud_api_call
 
 @upcloud_api_call
-def list_zones(logger, creds):
+def list_zones(logger, creds, **kwargs):
     manager = upcloud_api.CloudManager(creds['username'], creds['password'])
 
     logger.debug('Collecting zones...')
