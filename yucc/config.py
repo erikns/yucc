@@ -13,19 +13,23 @@ def _map_section(config, section):
 
 def read_config(**kwargs):
     read_creds = kwargs.get('read_creds', True)
+    profile_name = kwargs.get('profile', 'default')
 
     config = ConfigParser.RawConfigParser()
     config.read(os.path.join(os.path.expanduser('~'), '.yuccrc'))
-    default_profile = _map_section(config, 'default')
+    try:
+        profile = _map_section(config, profile_name)
+    except ConfigParser.NoSectionError:
+        raise ValueError("No profile named '{}'".format(profile_name))
 
-    if default_profile.get('default_zone'):
-        default_zone = default_profile['default_zone']
+    if profile.get('default_zone'):
+        default_zone = profile['default_zone']
     else:
         default_zone = None
 
     if read_creds:
-        return {'username': default_profile['username'],
-                'password': default_profile['password'],
+        return {'username': profile['username'],
+                'password': profile['password'],
                 'default_zone' : default_zone}
     else:
         return {'default_zone': default_zone}

@@ -10,7 +10,7 @@ Usage:
 
 Options:
     -p, --profile=<profile>   Settings profile to use. Read from
-                              ~/.yaccrc file. [default: ~/.yaccrc]
+                              ~/.yaccrc file. [default: default]
     -P, --prompt-credentials  Prompt for credentials rather than reading
                               them from profile
     -t, --tags                Filter on or set tags
@@ -70,22 +70,22 @@ def main():
         print __prog__, 'version', __version__
         exit(0)
 
-    logger = Logger(LogLevel.WARN)
-    if args['--prompt-credentials']:
-        config = read_config()
-        creds = credentials_prompt()
-        config['username'] = creds['username']
-        config['password'] = creds['password']
-    else:
-        config = read_config(read_creds=True)
+    try:
+        logger = Logger(LogLevel.WARN)
+        if args['--prompt-credentials']:
+            config = read_config(profile=args['--profile'])
+            creds = credentials_prompt()
+            config['username'] = creds['username']
+            config['password'] = creds['password']
+        else:
+            config = read_config(profile=args['--profile'], read_creds=True)
+    except ValueError as e:
+        logger.error(e.message)
+        exit(1)
 
     if not config.get('default_zone'):
         logger.warning('You have not set a default deployment zone. It will' +
             ' need to be provided.')
-
-    if args['--profile'] != '~/.yaccrc':
-        logger.critical('yucc does not yet support changing the profile file')
-        exit(1)
 
     if args['ls']:
         if args['zones']:
