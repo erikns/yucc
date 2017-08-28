@@ -59,4 +59,5 @@ def create_server(logger, creds, **kwargs):
         ],
         login_user=user_block
     )
-    manager.create_server(server)
+    created_server = manager.create_server(server)
+    logger.normal(str(created_server))
