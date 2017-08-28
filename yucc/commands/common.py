@@ -15,10 +15,16 @@ def upcloud_api_call(func):
         except upcloud_api.errors.UpCloudAPIError as error:
             if error.error_code == 'AUTHENTICATION_FAILED':
                 logger.error('Authentication failed')
+                _report_error_debug(logger, error)
             else:
                 logger.error('Unknown error occurred: ' +
                         error.error_message)
+                _report_error_debug(logger, error)
             return False
 
         return True
     return func_wrapper
+
+def _report_error_debug(logger, err):
+    logger.debug('Code: {} Message: {}'.format(err.error_code,
+    err.error_message))
