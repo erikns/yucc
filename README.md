@@ -48,6 +48,11 @@ To stop an existing server, type: `yucc server stop <uuid>`
 To remove an existing server, type: `yucc server delete <uuid>`. To also delete
 storage devices associated with the server, add the `--delete-storages` flag.
 
+To list all servers, run: `yucc ls servers`.
+
+All commands return results in JSON. There is a format option, but it is
+ignored for now.
+
 ## Todo
 
 - Add to PyPI
@@ -56,6 +61,11 @@ storage devices associated with the server, add the `--delete-storages` flag.
 - Searching/listing servers based on tags
 - IP address management, including listing IPs, assigning, etc...
 - Storage management, attaching, detaching, etc...
+
+## Contributing
+
+If you feel a feature is missing, find a bug or have any suggestions, please
+feel free to create an issue or open a pull request :)
 
 ## License
 
