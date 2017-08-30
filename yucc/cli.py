@@ -99,10 +99,6 @@ def get_command(cmd):
     }
     return cmds[cmd]
 
-def is_new_command(cmd):
-    import inspect
-    return inspect.isclass(cmd)
-
 def credentials_prompt():
     import getpass
     username = raw_input('Username: ')
@@ -201,16 +197,12 @@ def main():
 
     logger.debug('extra_args: ' + str(extra_args))
 
-    if is_new_command(command):
-        cmd = command(logger, config, **extra_args)
-        cmd.run()
-        if not cmd.has_error():
-            logger.normal(cmd.output())
-        else:
-            errors = cmd.errors()
-            for error in errors:
-                logger.error(error)
-            exit(1)
+    cmd = command(logger, config, **extra_args)
+    cmd.run()
+    if not cmd.has_error():
+        logger.normal(cmd.output())
     else:
-        if not command(logger, config, **extra_args):
-            exit(1)
+        errors = cmd.errors()
+        for error in errors:
+            logger.error(error)
+        exit(1)
