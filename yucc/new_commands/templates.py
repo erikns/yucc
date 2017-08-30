@@ -6,9 +6,6 @@ class ListTemplatesCommand(RawApiBase):
 
     def do_command(self):
         templates_response = self._http_get('/storage/template')
-        if not templates_response.ok:
-            self._report_error('Authentication failed')
-            return
 
         templates = templates_response.json()['storages']['storage']
         self._output = templates

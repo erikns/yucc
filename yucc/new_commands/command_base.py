@@ -1,6 +1,13 @@
 import json
 import requests
 
+class AuthenticationError:
+    def __init__(self, msg):
+        self.message = msg
+
+    def __str__(self):
+        return self.message
+
 class CommandBase(object):
     def __init__(self, logger, config, **kwargs):
         self.logger = logger
@@ -43,6 +50,22 @@ class RawApiBase(CommandBase):
         super(RawApiBase, self).__init__(logger, config, **kwargs)
         self._http_auth = (self.username, self.password)
 
+    def run(self):
+        try:
+            self.do_command()
+        except AuthenticationError as e:
+            self._report_error('Authentication failed')
+            self.logger.debug('AuthenticationError: {}'.format(e))
+        except Exception as e:
+            self._report_error('Exception: {}'.format(e))
+            raise e
+
     def _http_get(self, resource):
-        return requests.get(RawApiBase.ROOT_API_ENDPOINT + resource,
+        response = requests.get(RawApiBase.ROOT_API_ENDPOINT + resource,
             auth=self._http_auth)
+        if response.ok:
+            return response
+        elif response.status_code == 401:
+            raise AuthenticationError('Authentication failed with username {}'.format(self.username))
+        else:
+            raise Exception('Generic error executing HTTP request. Response code: {}'.format(response.status_code))

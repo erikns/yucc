@@ -10,9 +10,6 @@ class AccountCommand(RawApiBase):
 
     def do_command(self):
         account_response = self._http_get(AccountCommand.RESOURCE)
-        if not account_response.ok:
-            self._report_error('Authentication failed')
-            return
         account = account_response.json()['account']
 
         self._output = {

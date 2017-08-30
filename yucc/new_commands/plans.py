@@ -10,9 +10,5 @@ class ListPlansCommand(RawApiBase):
     def do_command(self):
         plans_response = self._http_get(ListPlansCommand.RESOURCE)
 
-        if not plans_response.ok:
-            self._report_error('Authentication failed')
-            return
-
         plans = plans_response.json()['plans']['plan']
         self._output = plans
