@@ -60,6 +60,7 @@ from new_commands import AccountCommand
 from new_commands import ListPlansCommand
 from new_commands import ListTemplatesCommand
 from new_commands import ListZonesCommand
+from new_commands import ListServersCommand
 from .logger import LogLevel, Logger
 from .config import read_config, verify_config_permissions
 
@@ -77,7 +78,7 @@ def get_command(cmd):
     cmds = {
         'ls_zones': ListZonesCommand,
         'ls_templates': ListTemplatesCommand,
-        'ls_servers': list_servers,
+        'ls_servers': ListServersCommand,
         'ls_plans': ListPlansCommand,
         'server_create': create_server,
         'server_start': start_server,
