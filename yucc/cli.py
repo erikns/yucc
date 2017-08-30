@@ -55,6 +55,7 @@ from docopt import docopt
 
 from . import __version__, __prog__
 from commands import *
+from new_commands import ProfileCommand
 from .logger import LogLevel, Logger
 from .config import read_config, verify_config_permissions
 
@@ -81,9 +82,22 @@ def get_command(cmd):
         'server_delete': delete_server,
         'server_info': dump_server,
         'account': show_account_info,
-        'profile': dump_profile_info
+        'profile': run_new_profile_command
     }
     return cmds[cmd]
+
+def run_new_profile_command(logger, config, **kwargs):
+    try:
+        cmd = ProfileCommand(logger, config, **kwargs)
+        cmd.run()
+        if cmd.error():
+            return False
+        else:
+            logger.normal(cmd.output())
+            return True
+    except Exception as e:
+        logger.error('Exception: {}'.format(e))
+        return False
 
 def credentials_prompt():
     import getpass
