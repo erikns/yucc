@@ -54,8 +54,9 @@ class CommandBase(object):
         self._errors.append(error)
 
     def output(self):
-        return json.dumps(self._output, sort_keys=True,
-                indent=4, separators=(',', ': '))
+        if self._output:
+            return json.dumps(self._output, sort_keys=True,
+                    indent=4, separators=(',', ': '))
 
 
 class RawApiBase(CommandBase):

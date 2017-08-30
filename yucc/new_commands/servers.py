@@ -24,3 +24,27 @@ class DumpServerInfoCommand(SdkApiBase):
     def do_command(self):
         server = self._sdk_call(lambda: self._manager.get_server(self.uuid))
         self._output = server.to_dict()
+
+
+class StartServerCommand(SdkApiBase):
+    def __init__(self, logger, config, **kwargs):
+        super(StartServerCommand, self).__init__(logger, config, **kwargs)
+        if not kwargs.get('uuid'):
+            raise Exception('UUID not specified')
+        self.uuid = kwargs.get('uuid')
+
+    def do_command(self):
+        server = self._sdk_call(lambda: self._manager.get_server(self.uuid))
+        self._sdk_call(lambda: server.start())
+
+
+class StopServerCommand(SdkApiBase):
+    def __init__(self, logger, config, **kwargs):
+        super(StopServerCommand, self).__init__(logger, config, **kwargs)
+        if not kwargs.get('uuid'):
+            raise Exception('UUID not specified')
+        self.uuid = kwargs.get('uuid')
+
+    def do_command(self):
+        server = self._sdk_call(lambda: self._manager.get_server(self.uuid))
+        self._sdk_call(lambda: server.stop())

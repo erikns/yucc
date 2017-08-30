@@ -4,3 +4,4 @@ from .account import AccountCommand
 from .templates import ListTemplatesCommand
 from .zones import ListZonesCommand
 from .servers import ListServersCommand, DumpServerInfoCommand
+from .servers import StopServerCommand, StartServerCommand
