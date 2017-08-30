@@ -1,3 +1,5 @@
+import json
+
 class CommandBase(object):
     def __init__(self, logger, config, **kwargs):
         self.logger = logger
@@ -6,17 +8,28 @@ class CommandBase(object):
         self.default_zone = config['default_zone']
         self.format = kwargs.get('format', 'json')
 
-        self._has_error = False
+        self._errors = []
         self._output = dict()
 
     def run(self):
-        self.do_command()
+        try:
+            self.do_command()
+        except Exception as e:
+            self._report_error('Exception: {}'.format(e))
+            raise e
 
     def do_command(self):
         raise Exception('CommandBase cannot be used by itself!')
 
-    def error(self):
-        return self._has_error
+    def has_error(self):
+        return len(self._errors) > 0
+
+    def errors(self):
+        return self._errors
+
+    def _report_error(self, error):
+        self._errors.append(error)
 
     def output(self):
-        return self._output
+        return json.dumps(self._output, sort_keys=True,
+                indent=4, separators=(',', ': '))

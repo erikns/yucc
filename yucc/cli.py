@@ -56,6 +56,7 @@ from docopt import docopt
 from . import __version__, __prog__
 from commands import *
 from new_commands import ProfileCommand
+from new_commands import AccountCommand
 from .logger import LogLevel, Logger
 from .config import read_config, verify_config_permissions
 
@@ -81,7 +82,7 @@ def get_command(cmd):
         'server_restart': restart_server,
         'server_delete': delete_server,
         'server_info': dump_server,
-        'account': show_account_info,
+        'account': AccountCommand,
         'profile': ProfileCommand
     }
     return cmds[cmd]
@@ -188,15 +189,14 @@ def main():
     logger.debug('extra_args: ' + str(extra_args))
 
     if is_new_command(command):
-        try:
-            cmd = command(logger, config, **extra_args)
-            cmd.run()
-            if not cmd.error():
-                logger.normal(cmd.output())
-            else:
-                logger.error('Error running command')
-        except Exception as e:
-            logger.error('Exception: {}'.format(e))
+        cmd = command(logger, config, **extra_args)
+        cmd.run()
+        if not cmd.has_error():
+            logger.normal(cmd.output())
+        else:
+            errors = cmd.errors()
+            for error in errors:
+                logger.error(error)
             exit(1)
     else:
         if not command(logger, config, **extra_args):
