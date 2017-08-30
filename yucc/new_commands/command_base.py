@@ -1,4 +1,5 @@
 import json
+import requests
 
 class CommandBase(object):
     def __init__(self, logger, config, **kwargs):
@@ -33,3 +34,15 @@ class CommandBase(object):
     def output(self):
         return json.dumps(self._output, sort_keys=True,
                 indent=4, separators=(',', ': '))
+
+
+class RawApiBase(CommandBase):
+    ROOT_API_ENDPOINT = 'https://api.upcloud.com/1.2'
+
+    def __init__(self, logger, config, **kwargs):
+        super(RawApiBase, self).__init__(logger, config, **kwargs)
+        self._http_auth = (self.username, self.password)
+
+    def _http_get(self, resource):
+        return requests.get(RawApiBase.ROOT_API_ENDPOINT + resource,
+            auth=self._http_auth)
