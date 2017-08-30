@@ -82,22 +82,13 @@ def get_command(cmd):
         'server_delete': delete_server,
         'server_info': dump_server,
         'account': show_account_info,
-        'profile': run_new_profile_command
+        'profile': ProfileCommand
     }
     return cmds[cmd]
 
-def run_new_profile_command(logger, config, **kwargs):
-    try:
-        cmd = ProfileCommand(logger, config, **kwargs)
-        cmd.run()
-        if cmd.error():
-            return False
-        else:
-            logger.normal(cmd.output())
-            return True
-    except Exception as e:
-        logger.error('Exception: {}'.format(e))
-        return False
+def is_new_command(cmd):
+    import inspect
+    return inspect.isclass(cmd)
 
 def credentials_prompt():
     import getpass
@@ -195,5 +186,18 @@ def main():
         exit(1)
 
     logger.debug('extra_args: ' + str(extra_args))
-    if not command(logger, config, **extra_args):
-        exit(1)
+
+    if is_new_command(command):
+        try:
+            cmd = command(logger, config, **extra_args)
+            cmd.run()
+            if not cmd.error():
+                logger.normal(cmd.output())
+            else:
+                logger.error('Error running command')
+        except Exception as e:
+            logger.error('Exception: {}'.format(e))
+            exit(1)
+    else:
+        if not command(logger, config, **extra_args):
+            exit(1)

@@ -4,6 +4,8 @@ class CommandBase(object):
         self.username = config['username']
         self.password = config['password']
         self.default_zone = config['default_zone']
+        self.format = kwargs.get('format', 'json')
+
         self._has_error = False
         self._output = dict()
 
