@@ -34,6 +34,7 @@ To list the zones that are available, type: `yucc ls zones`
 To create a server, do something like this:
 ```bash
 yucc server create --hostname server1 --plan 1xCPU-1GB \
+    --os "CentOS 7.0" \
     --login-user user --ssh-key ssh_public_key_file.pub \
     --ensure-started
 ```
