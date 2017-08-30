@@ -103,11 +103,16 @@ def restart_server(logger, creds, **kwargs):
 def delete_server(logger, creds, **kwargs):
     manager = upcloud_api.CloudManager(creds['username'], creds['password'])
     uuid = kwargs.get('uuid')
+    delete_storages = kwargs.get('delete-storages', False)
     if not uuid:
         raise ValueError('No identifier for server provided')
 
     server = manager.get_server(uuid)
     server.destroy()
+    if delete_storages:
+        for storage in server.storage_devices:
+            storage.destroy()
+            logger.info('Storage device {} deleted'.format(str(storage)))
 
     logger.info('Server {} deleted'.format(uuid))
 
@@ -120,4 +125,4 @@ def dump_server(logger, creds, **kwargs):
 
     server = manager.get_server(uuid)
 
-    raw_output('server', server)
+    raw_output('server', server.to_dict())

@@ -13,7 +13,7 @@ Usage:
     yucc server start <uuid> [options]
     yucc server stop <uuid> [options]
     yucc server restart <uuid> [options]
-    yucc server delete <uuid> [options]
+    yucc server delete <uuid> [--delete-storages] [options]
     yucc server info <uuid> [options]
     yucc account [options]
     yucc profile [options]
@@ -28,6 +28,7 @@ Options:
     --ssh-key=<ssh-key>        The ssh public key to deploy to the server
     --zone=<zone>              The zone to deploy to. Default might be read from
                                profile.
+    --delete-storages          Also delete storages when deleting server
     -f, --format=<format>      Program output format. [default: json]
     -p, --profile=<profile>    Settings profile to use. Read from
                                ~/.yaccrc file. [default: default]
@@ -162,6 +163,8 @@ def main():
             extra_args['uuid'] = args['<uuid>']
         elif args['delete']:
             command = get_command('server_delete')
+            if args['--delete-storages']:
+                extra_args['delete-storages'] = True
             extra_args['uuid'] = args['<uuid>']
         elif args['info']:
             command = get_command('server_info')
