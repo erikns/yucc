@@ -9,7 +9,8 @@ Usage:
     yucc ls zones [options]
     yucc ls plans [options]
     yucc server create (--hostname=<hostname>) (--plan=<plan>)
-      (--login-user=<user> --ssh-key=<ssh-key>) [options]
+      (--login-user=<user> --ssh-key=<ssh-key>) [--ensure-started]
+      [options]
     yucc server start <uuid> [options]
     yucc server stop <uuid> [options]
     yucc server restart <uuid> [options]
@@ -28,6 +29,8 @@ Options:
     --ssh-key=<ssh-key>        The ssh public key to deploy to the server
     --zone=<zone>              The zone to deploy to. Default might be read from
                                profile.
+    --ensure-started           Wait for the server to start when creating the
+                               server.
     --delete-storages          Also delete storages when deleting server
     -f, --format=<format>      Program output format. [default: json]
     -p, --profile=<profile>    Settings profile to use. Read from
@@ -152,6 +155,7 @@ def main():
             extra_args['zone'] = zone
             extra_args['login_user'] = args['--login-user']
             extra_args['ssh_key'] = args['--ssh-key']
+            extra_args['ensure_started'] = args['--ensure-started']
         elif args['start']:
             command = get_command('server_start')
             extra_args['uuid'] = args['<uuid>']

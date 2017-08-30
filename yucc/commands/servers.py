@@ -61,6 +61,8 @@ def create_server(logger, creds, **kwargs):
         login_user=user_block
     )
     created_server = manager.create_server(server)
+    if kwargs.get('ensure_started', False):
+        created_server.ensure_started()
     logger.normal(str(created_server))
 
 @upcloud_api_call
