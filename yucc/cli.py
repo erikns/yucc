@@ -55,18 +55,18 @@ from docopt import docopt
 
 from . import __version__, __prog__
 
-from new_commands import ProfileCommand
-from new_commands import AccountCommand
-from new_commands import ListPlansCommand
-from new_commands import ListTemplatesCommand
-from new_commands import ListZonesCommand
-from new_commands import ListServersCommand
-from new_commands import DumpServerInfoCommand
-from new_commands import StartServerCommand
-from new_commands import RestartServerCommand
-from new_commands import StopServerCommand
-from new_commands import DeleteServerCommand
-from new_commands import CreateServerCommand
+from commands import ProfileCommand
+from commands import AccountCommand
+from commands import ListPlansCommand
+from commands import ListTemplatesCommand
+from commands import ListZonesCommand
+from commands import ListServersCommand
+from commands import DumpServerInfoCommand
+from commands import StartServerCommand
+from commands import RestartServerCommand
+from commands import StopServerCommand
+from commands import DeleteServerCommand
+from commands import CreateServerCommand
 
 from .logger import LogLevel, Logger
 from .config import read_config, verify_config_permissions
