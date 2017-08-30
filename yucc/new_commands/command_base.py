@@ -57,6 +57,8 @@ class CommandBase(object):
         if self._output:
             return json.dumps(self._output, sort_keys=True,
                     indent=4, separators=(',', ': '))
+        else:
+            return json.dumps([])
 
 
 class RawApiBase(CommandBase):

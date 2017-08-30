@@ -55,7 +55,6 @@ from docopt import docopt
 
 from . import __version__, __prog__
 
-from commands import *
 from new_commands import ProfileCommand
 from new_commands import AccountCommand
 from new_commands import ListPlansCommand
@@ -64,7 +63,10 @@ from new_commands import ListZonesCommand
 from new_commands import ListServersCommand
 from new_commands import DumpServerInfoCommand
 from new_commands import StartServerCommand
+from new_commands import RestartServerCommand
 from new_commands import StopServerCommand
+from new_commands import DeleteServerCommand
+from new_commands import CreateServerCommand
 
 from .logger import LogLevel, Logger
 from .config import read_config, verify_config_permissions
@@ -85,11 +87,11 @@ def get_command(cmd):
         'ls_templates': ListTemplatesCommand,
         'ls_servers': ListServersCommand,
         'ls_plans': ListPlansCommand,
-        'server_create': create_server,
+        'server_create': CreateServerCommand,
         'server_start': StartServerCommand,
         'server_stop': StopServerCommand,
-        'server_restart': restart_server,
-        'server_delete': delete_server,
+        'server_restart': RestartServerCommand,
+        'server_delete': DeleteServerCommand,
         'server_info': DumpServerInfoCommand,
         'account': AccountCommand,
         'profile': ProfileCommand
