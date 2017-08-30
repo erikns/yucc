@@ -9,6 +9,15 @@ class AuthenticationError:
     def __str__(self):
         return self.message
 
+
+class CommandError:
+    def __init__(self, msg):
+        self.message = msg
+
+    def __str__(self):
+        return self.message
+
+
 class CommandBase(object):
     def __init__(self, logger, config, **kwargs):
         self.logger = logger
@@ -26,9 +35,11 @@ class CommandBase(object):
         except AuthenticationError as e:
             self._report_error('Authentication failed')
             self.logger.debug('Exception: {}'.format(e))
+        except CommandError as e:
+            self._report_error('Command error: {}'.format(e))
         except Exception as e:
             self._report_error('Exception: {}'.format(e))
-            raise e
+            # raise e
 
     def do_command(self):
         raise Exception('CommandBase cannot be used by itself!')
@@ -77,4 +88,4 @@ class SdkApiBase(CommandBase):
             if e.error_code == 'AUTHENTICATION_FAILED':
                 raise AuthenticationError(e.error_message)
             else:
-                raise Exception(e.error_message)
+                raise CommandError(e.error_message)
