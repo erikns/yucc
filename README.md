@@ -50,10 +50,12 @@ storage devices associated with the server, add the `--delete-storages` flag.
 
 ## Todo
 
+- Add to PyPI
 - Tag management, including adding tags on server creation, listing, editing and
   deleting tags.
 - Searching/listing servers based on tags
 - IP address management, including listing IPs, assigning, etc...
+- Storage management, attaching, detaching, etc...
 
 ## License
 
