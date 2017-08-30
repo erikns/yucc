@@ -1,5 +1,6 @@
 import json
 import requests
+import upcloud_api
 
 class AuthenticationError:
     def __init__(self, msg):
@@ -69,3 +70,19 @@ class RawApiBase(CommandBase):
             raise AuthenticationError('Authentication failed with username {}'.format(self.username))
         else:
             raise Exception('Generic error executing HTTP request. Response code: {}'.format(response.status_code))
+
+
+class SdkApiBase(CommandBase):
+    def __init__(self, logger, config, **kwargs):
+        super(SdkApiBase, self).__init__(logger, config, **kwargs)
+        self._manager = upcloud_api.CloudManager(self.username, self.password)
+
+    def run(self):
+        try:
+            self.do_command()
+        except upcloud_api.errors.UpCloudAPIError as e:
+            self._report_error(e.error_message)
+            self.logger.debug('Exception: {}'.format(e))
+        except Exception as e:
+            self._report_error('Exception: {}'.format(e))
+            raise e
