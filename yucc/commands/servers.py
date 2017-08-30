@@ -2,7 +2,7 @@ import upcloud_api
 
 from .common import upcloud_api_call
 from ..logger import Logger
-from ..outputter import output
+from ..outputter import output, raw_output
 
 @upcloud_api_call
 def list_servers(logger, creds, **kwargs):
@@ -10,7 +10,8 @@ def list_servers(logger, creds, **kwargs):
     servers = manager.get_servers()
     logger.debug(str(servers))
     if len(servers) > 0:
-        output('server', servers)
+        for server in servers:
+            raw_output('server', server.to_dict())
     else:
         logger.info('There are no servers')
 
@@ -61,3 +62,62 @@ def create_server(logger, creds, **kwargs):
     )
     created_server = manager.create_server(server)
     logger.normal(str(created_server))
+
+@upcloud_api_call
+def start_server(logger, creds, **kwargs):
+    manager = upcloud_api.CloudManager(creds['username'], creds['password'])
+    uuid = kwargs.get('uuid')
+    if not uuid:
+        raise ValueError('No identifier for server provided')
+
+    server = manager.get_server(uuid)
+    server.start()
+
+    logger.info('Server {} started'.format(uuid))
+
+@upcloud_api_call
+def stop_server(logger, creds, **kwargs):
+    manager = upcloud_api.CloudManager(creds['username'], creds['password'])
+    uuid = kwargs.get('uuid')
+    if not uuid:
+        raise ValueError('No identifier for server provided')
+
+    server = manager.get_server(uuid)
+    server.shutdown()
+
+    logger.info('Server {} stopped'.format(uuid))
+
+@upcloud_api_call
+def restart_server(logger, creds, **kwargs):
+    manager = upcloud_api.CloudManager(creds['username'], creds['password'])
+    uuid = kwargs.get('uuid')
+    if not uuid:
+        raise ValueError('No identifier for server provided')
+
+    server = manager.get_server(uuid)
+    server.restart()
+
+    logger.info('Server {} restarted'.format(uuid))
+
+@upcloud_api_call
+def delete_server(logger, creds, **kwargs):
+    manager = upcloud_api.CloudManager(creds['username'], creds['password'])
+    uuid = kwargs.get('uuid')
+    if not uuid:
+        raise ValueError('No identifier for server provided')
+
+    server = manager.get_server(uuid)
+    server.destroy()
+
+    logger.info('Server {} deleted'.format(uuid))
+
+@upcloud_api_call
+def dump_server(logger, creds, **kwargs):
+    manager = upcloud_api.CloudManager(creds['username'], creds['password'])
+    uuid = kwargs.get('uuid')
+    if not uuid:
+        raise ValueError('No identifier for server provided')
+
+    server = manager.get_server(uuid)
+
+    raw_output('server', server)

@@ -17,6 +17,8 @@ def upcloud_api_call(func):
             if error.error_code == 'AUTHENTICATION_FAILED':
                 logger.error('Authentication failed')
                 _report_error_debug(logger, error)
+            elif error.error_code == 'SERVER_NOT_FOUND':
+                logger.error('The server was not found')
             else:
                 logger.error('Unknown error occurred: ' +
                         error.error_message)
@@ -28,7 +30,7 @@ def upcloud_api_call(func):
         except Exception as error:
             logger.debug(error.message)
             logger.error('Unknown error occurred')
-            return False
+            raise error
 
         return True
     return func_wrapper

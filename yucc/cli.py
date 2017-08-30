@@ -10,6 +10,11 @@ Usage:
     yucc ls plans [options]
     yucc server create (--hostname=<hostname>) (--plan=<plan>)
       (--login-user=<user> --ssh-key=<ssh-key>) [options]
+    yucc server start <uuid> [options]
+    yucc server stop <uuid> [options]
+    yucc server restart <uuid> [options]
+    yucc server delete <uuid> [options]
+    yucc server info <uuid> [options]
     yucc account [options]
     yucc profile [options]
     yucc [options]
@@ -23,7 +28,7 @@ Options:
     --ssh-key=<ssh-key>        The ssh public key to deploy to the server
     --zone=<zone>              The zone to deploy to. Default might be read from
                                profile.
-    -f, --format=<format>      Program output format. [default: table]
+    -f, --format=<format>      Program output format. [default: json]
     -p, --profile=<profile>    Settings profile to use. Read from
                                ~/.yaccrc file. [default: default]
     -P, --prompt-credentials   Prompt for credentials rather than reading
@@ -66,6 +71,11 @@ def get_command(cmd):
         'ls_servers': list_servers,
         'ls_plans': list_plans,
         'server_create': create_server,
+        'server_start': start_server,
+        'server_stop': stop_server,
+        'server_restart': restart_server,
+        'server_delete': delete_server,
+        'server_info': dump_server,
         'account': show_account_info,
         'profile': dump_profile_info
     }
@@ -141,6 +151,21 @@ def main():
             extra_args['zone'] = zone
             extra_args['login_user'] = args['--login-user']
             extra_args['ssh_key'] = args['--ssh-key']
+        elif args['start']:
+            command = get_command('server_start')
+            extra_args['uuid'] = args['<uuid>']
+        elif args['stop']:
+            command = get_command('server_stop')
+            extra_args['uuid'] = args['<uuid>']
+        elif args['restart']:
+            command = get_command('server_restart')
+            extra_args['uuid'] = args['<uuid>']
+        elif args['delete']:
+            command = get_command('server_delete')
+            extra_args['uuid'] = args['<uuid>']
+        elif args['info']:
+            command = get_command('server_info')
+            extra_args['uuid'] = args['<uuid>']
         else:
             logger.critical('Unknown subcommand for server')
             exit(1)
