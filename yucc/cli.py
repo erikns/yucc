@@ -61,6 +61,7 @@ from new_commands import ListPlansCommand
 from new_commands import ListTemplatesCommand
 from new_commands import ListZonesCommand
 from new_commands import ListServersCommand
+from new_commands import DumpServerInfoCommand
 from .logger import LogLevel, Logger
 from .config import read_config, verify_config_permissions
 
@@ -85,7 +86,7 @@ def get_command(cmd):
         'server_stop': stop_server,
         'server_restart': restart_server,
         'server_delete': delete_server,
-        'server_info': dump_server,
+        'server_info': DumpServerInfoCommand,
         'account': AccountCommand,
         'profile': ProfileCommand
     }
