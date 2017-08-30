@@ -23,6 +23,9 @@ class CommandBase(object):
     def run(self):
         try:
             self.do_command()
+        except AuthenticationError as e:
+            self._report_error('Authentication failed')
+            self.logger.debug('Exception: {}'.format(e))
         except Exception as e:
             self._report_error('Exception: {}'.format(e))
             raise e
@@ -51,16 +54,6 @@ class RawApiBase(CommandBase):
         super(RawApiBase, self).__init__(logger, config, **kwargs)
         self._http_auth = (self.username, self.password)
 
-    def run(self):
-        try:
-            self.do_command()
-        except AuthenticationError as e:
-            self._report_error('Authentication failed')
-            self.logger.debug('AuthenticationError: {}'.format(e))
-        except Exception as e:
-            self._report_error('Exception: {}'.format(e))
-            raise e
-
     def _http_get(self, resource):
         response = requests.get(RawApiBase.ROOT_API_ENDPOINT + resource,
             auth=self._http_auth)
@@ -77,15 +70,11 @@ class SdkApiBase(CommandBase):
         super(SdkApiBase, self).__init__(logger, config, **kwargs)
         self._manager = upcloud_api.CloudManager(self.username, self.password)
 
-    def run(self):
+    def _sdk_call(self, func):
         try:
-            self.do_command()
+            return func()
         except upcloud_api.errors.UpCloudAPIError as e:
             if e.error_code == 'AUTHENTICATION_FAILED':
-                self._report_error('Authentication failed')
+                raise AuthenticationError(e.error_message)
             else:
-                self._report_error(e.error_message)
-            self.logger.debug('Exception: {}'.format(e))
-        except Exception as e:
-            self._report_error('Exception: {}'.format(e))
-            raise e
+                raise Exception(e.error_message)

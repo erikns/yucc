@@ -5,5 +5,5 @@ class ListZonesCommand(SdkApiBase):
         super(ListZonesCommand, self).__init__(logger, config, **kwargs)
 
     def do_command(self):
-        zones = self._manager.get_zones()['zones']['zone']
+        zones = self._sdk_call(lambda: self._manager.get_zones()['zones']['zone'])
         self._output = zones
