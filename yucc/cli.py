@@ -58,6 +58,7 @@ from commands import *
 from new_commands import ProfileCommand
 from new_commands import AccountCommand
 from new_commands import ListPlansCommand
+from new_commands import ListTemplatesCommand
 from .logger import LogLevel, Logger
 from .config import read_config, verify_config_permissions
 
@@ -74,7 +75,7 @@ def determine_log_level(args):
 def get_command(cmd):
     cmds = {
         'ls_zones': list_zones,
-        'ls_templates': list_templates,
+        'ls_templates': ListTemplatesCommand,
         'ls_servers': list_servers,
         'ls_plans': ListPlansCommand,
         'server_create': create_server,
