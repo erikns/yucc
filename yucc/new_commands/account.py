@@ -1,17 +1,15 @@
 
 import requests
-from .command_base import CommandBase
+from .command_base import RawApiBase
 
-class AccountCommand(CommandBase):
-    ROOT_API_ENDPOINT = 'https://api.upcloud.com/1.2'
+class AccountCommand(RawApiBase):
     RESOURCE = '/account'
 
     def __init__(self, logger, config, **kwargs):
         super(AccountCommand, self).__init__(logger, config, **kwargs)
 
     def do_command(self):
-        account_response = requests.get(AccountCommand.ROOT_API_ENDPOINT +
-            AccountCommand.RESOURCE, auth=(self.username, self.password))
+        account_response = self._http_get(AccountCommand.RESOURCE)
         if not account_response.ok:
             self._report_error('Authentication failed')
             return
