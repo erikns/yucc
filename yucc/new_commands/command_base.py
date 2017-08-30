@@ -36,7 +36,7 @@ class CommandBase(object):
             self._report_error('Authentication failed')
             self.logger.debug('Exception: {}'.format(e))
         except CommandError as e:
-            self._report_error('Command error: {}'.format(e))
+            self._report_error(str(e))
         except Exception as e:
             self._report_error('Exception: {}'.format(e))
             # raise e
@@ -73,7 +73,7 @@ class RawApiBase(CommandBase):
         elif response.status_code == 401:
             raise AuthenticationError('Authentication failed with username {}'.format(self.username))
         else:
-            raise Exception('Generic error executing HTTP request. Response code: {}'.format(response.status_code))
+            raise CommandError('Generic error executing HTTP request. Response code: {}'.format(response.status_code))
 
 
 class SdkApiBase(CommandBase):
@@ -87,5 +87,8 @@ class SdkApiBase(CommandBase):
         except upcloud_api.errors.UpCloudAPIError as e:
             if e.error_code == 'AUTHENTICATION_FAILED':
                 raise AuthenticationError(e.error_message)
+            elif e.error_code == 'SERVER_NOT_FOUND':
+                raise CommandError('The server does not exist')
             else:
-                raise CommandError(e.error_message)
+                self.logger.debug('{}: {}'.format(e.error_code, e.error_message))
+                raise CommandError('Unknown error {} {}'.format(e.error_code, e.error_message))
