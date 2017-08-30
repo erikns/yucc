@@ -16,7 +16,7 @@ setup(
     version = __version__,
     description = 'CLI for UpCloud public cloud service',
     long_description = long_description,
-    url = 'TODO',
+    home_page = 'https://github.com/erikns/yucc',
     author = 'Erik Sørensen',
     author_email = 'erik@enssoftware.no',
     license = 'MIT',
