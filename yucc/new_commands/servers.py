@@ -48,3 +48,32 @@ class StopServerCommand(SdkApiBase):
     def do_command(self):
         server = self._sdk_call(lambda: self._manager.get_server(self.uuid))
         self._sdk_call(lambda: server.stop())
+
+
+class RestartServerCommand(SdkApiBase):
+    def __init__(self, logger, config, **kwargs):
+        super(RestartServerCommand, self).__init__(logger, config, **kwargs)
+        if not kwargs.get('uuid'):
+            raise Exception('UUID not specified')
+        self.uuid = kwargs.get('uuid')
+
+    def do_command(self):
+        server = self._sdk_call(lambda: self._manager.get_server(self.uuid))
+        self._sdk_call(lambda: server.restart())
+
+
+class DeleteServerCommand(SdkApiBase):
+    def __init__(self, logger, config, **kwargs):
+        super(DeleteServerCommand, self).__init__(logger, config, **kwargs)
+        if not kwargs.get('uuid'):
+            raise Exception('UUID not specified')
+        self.uuid = kwargs.get('uuid')
+        self.delete_storages = kwargs.get('delete_storages', False)
+
+    def do_command(self):
+        server = self._sdk_call(lambda: self._manager.get_server(self.uuid))
+        self._sdk_call(lambda: server.destroy())
+
+        if self.delete_storages:
+            for storage in server.storage_devices:
+                self._sdk_call(lambda: storage.destroy())

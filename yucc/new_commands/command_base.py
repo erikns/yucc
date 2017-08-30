@@ -27,7 +27,7 @@ class CommandBase(object):
         self.format = kwargs.get('format', 'json')
 
         self._errors = []
-        self._output = dict()
+        self._output = None
 
     def run(self):
         try:
