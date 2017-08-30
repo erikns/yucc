@@ -3,7 +3,7 @@ import pprint
 import json
 
 def output(kind, data, **kwargs):
-    output_format = kwargs.get('format', 'table')
+    output_format = kwargs.get('format', 'json')
     if output_format == 'table':
         print tabulate.tabulate(data, headers='keys')
     elif output_format == 'json':

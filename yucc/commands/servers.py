@@ -10,7 +10,8 @@ def list_servers(logger, creds, **kwargs):
     servers = manager.get_servers()
     logger.debug(str(servers))
     if len(servers) > 0:
-        output('server', servers)
+        for server in servers:
+            raw_output('server', server.to_dict())
     else:
         logger.info('There are no servers')
 

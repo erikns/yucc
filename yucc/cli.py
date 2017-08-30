@@ -28,7 +28,7 @@ Options:
     --ssh-key=<ssh-key>        The ssh public key to deploy to the server
     --zone=<zone>              The zone to deploy to. Default might be read from
                                profile.
-    -f, --format=<format>      Program output format. [default: table]
+    -f, --format=<format>      Program output format. [default: json]
     -p, --profile=<profile>    Settings profile to use. Read from
                                ~/.yaccrc file. [default: default]
     -P, --prompt-credentials   Prompt for credentials rather than reading
