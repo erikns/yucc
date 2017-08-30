@@ -81,7 +81,10 @@ class SdkApiBase(CommandBase):
         try:
             self.do_command()
         except upcloud_api.errors.UpCloudAPIError as e:
-            self._report_error(e.error_message)
+            if e.error_code == 'AUTHENTICATION_FAILED':
+                self._report_error('Authentication failed')
+            else:
+                self._report_error(e.error_message)
             self.logger.debug('Exception: {}'.format(e))
         except Exception as e:
             self._report_error('Exception: {}'.format(e))
