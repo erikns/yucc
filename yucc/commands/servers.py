@@ -95,6 +95,8 @@ class CreateServerCommand(SdkApiBase):
             raise ValueError('SSH key is required')
         if not kwargs.get('login_user'):
             raise ValueError('Login user is required')
+        if not kwargs.get('os'):
+            raise ValueError('OS is required')
 
         self.hostname = kwargs.get('hostname')
         self.plan = kwargs.get('plan')
@@ -102,6 +104,7 @@ class CreateServerCommand(SdkApiBase):
         self.ssh_key = kwargs.get('ssh_key')
         self.login_user = kwargs.get('login_user')
         self.ensure_started = kwargs.get('ensure_started', False)
+        self.os = kwargs.get('os')
 
     def do_command(self):
         loaded_ssh_key = self._load_ssh_keyfile(self.ssh_key)
@@ -116,7 +119,7 @@ class CreateServerCommand(SdkApiBase):
             hostname = self.hostname,
             zone = self.zone,
             storage_devices = [
-                upcloud_api.Storage(os='CentOS 7.0', size=10)
+                upcloud_api.Storage(os=self.os, size=10)
             ],
             login_user = user_block
         )

@@ -38,8 +38,10 @@ class CommandBase(object):
         except CommandError as e:
             self._report_error(str(e))
         except Exception as e:
-            self._report_error('Exception: {}'.format(e))
-            # raise e
+            if str(e).startswith('Invalid OS'):
+                self._report_error('{}'.format(e))
+            else:
+                self._report_error('Exception: {}'.format(e))
 
     def do_command(self):
         raise Exception('CommandBase cannot be used by itself!')
