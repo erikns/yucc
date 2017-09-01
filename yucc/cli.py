@@ -4,19 +4,7 @@ from docopt import docopt
 
 from . import __version__, __prog__, __doc__ as __maindoc__
 
-from commands import ProfileCommand
-from commands import AccountCommand
-from commands import ListPlansCommand
-from commands import ListTemplatesCommand
-from commands import ListZonesCommand
-from commands import ListServersCommand
-from commands import DumpServerInfoCommand
-from commands import StartServerCommand
-from commands import RestartServerCommand
-from commands import StopServerCommand
-from commands import DeleteServerCommand
-from commands import CreateServerCommand
-
+from commands import *
 from .logger import LogLevel, Logger
 from .config import read_config, verify_config_permissions
 from .util import credentials_prompt
