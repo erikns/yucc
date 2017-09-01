@@ -94,6 +94,8 @@ class SdkApiBase(CommandBase):
                 raise AuthenticationError(e.error_message)
             elif e.error_code == 'SERVER_NOT_FOUND':
                 raise CommandError('The server does not exist')
+            elif e.error_code == 'ZONE_NOT_FOUND':
+                raise CommandError(e.error_message)
             else:
                 self.logger.debug('{}: {}'.format(e.error_code, e.error_message))
                 raise CommandError('Unknown error {} {}'.format(e.error_code, e.error_message))

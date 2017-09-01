@@ -1,5 +1,5 @@
 import upcloud_api
-from .command_base import SdkApiBase
+from .command_base import SdkApiBase, CommandError
 
 class ListServersCommand(SdkApiBase):
     def __init__(self, logger, config, **kwargs):
@@ -19,7 +19,7 @@ class DumpServerInfoCommand(SdkApiBase):
     def __init__(self, logger, config, **kwargs):
         super(DumpServerInfoCommand, self).__init__(logger, config, **kwargs)
         if not kwargs.get('uuid'):
-            raise Exception('UUID not specified')
+            raise ValueError('UUID not specified')
         self.uuid = kwargs.get('uuid')
 
     def do_command(self):
@@ -31,7 +31,7 @@ class StartServerCommand(SdkApiBase):
     def __init__(self, logger, config, **kwargs):
         super(StartServerCommand, self).__init__(logger, config, **kwargs)
         if not kwargs.get('uuid'):
-            raise Exception('UUID not specified')
+            raise ValueError('UUID not specified')
         self.uuid = kwargs.get('uuid')
 
     def do_command(self):
@@ -43,7 +43,7 @@ class StopServerCommand(SdkApiBase):
     def __init__(self, logger, config, **kwargs):
         super(StopServerCommand, self).__init__(logger, config, **kwargs)
         if not kwargs.get('uuid'):
-            raise Exception('UUID not specified')
+            raise ValueError('UUID not specified')
         self.uuid = kwargs.get('uuid')
 
     def do_command(self):
@@ -57,7 +57,7 @@ class RestartServerCommand(SdkApiBase):
     def __init__(self, logger, config, **kwargs):
         super(RestartServerCommand, self).__init__(logger, config, **kwargs)
         if not kwargs.get('uuid'):
-            raise Exception('UUID not specified')
+            raise ValueError('UUID not specified')
         self.uuid = kwargs.get('uuid')
 
     def do_command(self):
@@ -69,7 +69,7 @@ class DeleteServerCommand(SdkApiBase):
     def __init__(self, logger, config, **kwargs):
         super(DeleteServerCommand, self).__init__(logger, config, **kwargs)
         if not kwargs.get('uuid'):
-            raise Exception('UUID not specified')
+            raise ValueError('UUID not specified')
         self.uuid = kwargs.get('uuid')
         self.delete_storages = kwargs.get('delete_storages', False)
 

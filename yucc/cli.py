@@ -7,7 +7,7 @@ from . import __version__, __prog__, __doc__ as __maindoc__
 from commands import *
 from .logger import LogLevel, Logger
 from .config import read_config, verify_config_permissions
-from .util import credentials_prompt
+from .util import *
 
 def determine_log_level(args):
     level = LogLevel.WARN
@@ -37,6 +37,28 @@ def get_command(cmd):
     return cmds[cmd]
 
 
+def build_command(args):
+    root_cmds = ['ls', 'server', 'account', 'profile']
+    sub_cmds = ['zones', 'templates', 'servers', 'plans',
+        'create', 'start', 'stop', 'restart', 'delete', 'info']
+    root_args = ['--debug', '--verbose', '--quiet', '--profile',
+        '--prompt-credentials', '--version']
+
+    root_command = first_in(args, root_cmds + root_args)
+    subcommand = first_in(args, sub_cmds)
+
+    extras = exclude_keys(args, root_cmds + sub_cmds)
+    extras = strip_keys(extras, '-')
+    extras = strip_keys(extras, '<')
+    extras = replace_in_keys(extras, '<', '')
+    extras = replace_in_keys(extras, '>', '')
+    extras = strip_none(extras)
+    extras = replace_in_keys(extras, '-', '_')
+
+    cmd_string = root_command + ('_' + subcommand if subcommand else '')
+    return get_command(cmd_string), extras
+
+
 def main():
     args = docopt(__maindoc__)
     if args['--debug']:
@@ -61,80 +83,26 @@ def main():
         logger.error(e.message)
         exit(1)
 
+    command, extra_args = build_command(args)
+    logger.debug('extra_args: ' + str(extra_args))
+
     if not config.get('default_zone'):
         logger.warning('You have not set a default deployment zone. It will' +
             ' need to be provided.')
 
-    command = None
-    extra_args = {'format': args['--format']}
-
-    if args['ls']:
-        if args['zones']:
-            command = get_command('ls_zones')
-        elif args['templates']:
-            command = get_command('ls_templates')
-        elif args['servers']:
-            command = get_command('ls_servers')
-        elif args['plans']:
-            command = get_command('ls_plans')
+    try:
+        cmd = command(logger, config, **extra_args)
+        cmd.run()
+        if not cmd.has_error():
+            logger.normal(cmd.output())
         else:
-            logger.critical('Unknown resource type given to ' +
-                    'command `ls`')
+            errors = cmd.errors()
+            for error in errors:
+                logger.error(error)
             exit(1)
-    elif args['account']:
-        command = get_command('account')
-    elif args['profile']:
-        command = get_command('profile')
-    elif args['server']:
-        if args['create']:
-            command = get_command('server_create')
-            extra_args['hostname'] = args['--hostname']
-            extra_args['plan'] = args['--plan']
-            if not args.get('zone'):
-                zone = config.get('default_zone')
-                if not zone:
-                    logger.error('No default zone specified. You will have to ' +
-                       'provide it.')
-                    exit(1)
-            else:
-                zone = args['zone']
-            extra_args['zone'] = zone
-            extra_args['login_user'] = args['--login-user']
-            extra_args['ssh_key'] = args['--ssh-key']
-            extra_args['ensure_started'] = args['--ensure-started']
-            extra_args['os'] = args['--os']
-        elif args['start']:
-            command = get_command('server_start')
-            extra_args['uuid'] = args['<uuid>']
-        elif args['stop']:
-            command = get_command('server_stop')
-            extra_args['uuid'] = args['<uuid>']
-        elif args['restart']:
-            command = get_command('server_restart')
-            extra_args['uuid'] = args['<uuid>']
-        elif args['delete']:
-            command = get_command('server_delete')
-            if args['--delete-storages']:
-                extra_args['delete-storages'] = True
-            extra_args['uuid'] = args['<uuid>']
-        elif args['info']:
-            command = get_command('server_info')
-            extra_args['uuid'] = args['<uuid>']
-        else:
-            logger.critical('Unknown subcommand for server')
-            exit(1)
-    else:
-        logger.critical('Command given is unknown')
+    except ValueError as e:
+        logger.error(str(e))
         exit(1)
-
-    logger.debug('extra_args: ' + str(extra_args))
-
-    cmd = command(logger, config, **extra_args)
-    cmd.run()
-    if not cmd.has_error():
-        logger.normal(cmd.output())
-    else:
-        errors = cmd.errors()
-        for error in errors:
-            logger.error(error)
-        exit(1)
+    except Exception as e:
+        logger.critical('Unknown exception thrown')
+        raise e
