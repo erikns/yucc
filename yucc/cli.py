@@ -71,6 +71,7 @@ from commands import CreateServerCommand
 
 from .logger import LogLevel, Logger
 from .config import read_config, verify_config_permissions
+from .util import credentials_prompt
 
 def determine_log_level(args):
     level = LogLevel.WARN
@@ -99,11 +100,6 @@ def get_command(cmd):
     }
     return cmds[cmd]
 
-def credentials_prompt():
-    import getpass
-    username = raw_input('Username: ')
-    password = getpass.getpass('Password: ')
-    return {'username': username, 'password': password}
 
 def main():
     args = docopt(__doc__)
