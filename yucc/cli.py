@@ -86,9 +86,11 @@ def main():
     command, extra_args = build_command(args)
     logger.debug('extra_args: ' + str(extra_args))
 
-    if not config.get('default_zone'):
+    default_zone = config.get('default_zone')
+    if not default_zone:
         logger.warning('You have not set a default deployment zone. It will' +
             ' need to be provided.')
+    extra_args['zone'] = default_zone
 
     try:
         cmd = command(logger, config, **extra_args)
