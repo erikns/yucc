@@ -20,21 +20,26 @@ def determine_log_level(args):
     return level
 
 def get_command(cmd):
-    cmds = {
-        'ls_zones': ListZonesCommand,
-        'ls_templates': ListTemplatesCommand,
-        'ls_servers': ListServersCommand,
-        'ls_plans': ListPlansCommand,
-        'server_create': CreateServerCommand,
-        'server_start': StartServerCommand,
-        'server_stop': StopServerCommand,
-        'server_restart': RestartServerCommand,
-        'server_delete': DeleteServerCommand,
-        'server_info': DumpServerInfoCommand,
-        'account': AccountCommand,
-        'profile': ProfileCommand
-    }
-    return cmds[cmd]
+    if cmd.startswith('-'):
+        # if the "command" given to this function starts with --, it
+        # means there has been no known command given on program invocation
+        return None
+    else:
+        cmds = {
+            'ls_zones': ListZonesCommand,
+            'ls_templates': ListTemplatesCommand,
+            'ls_servers': ListServersCommand,
+            'ls_plans': ListPlansCommand,
+            'server_create': CreateServerCommand,
+            'server_start': StartServerCommand,
+            'server_stop': StopServerCommand,
+            'server_restart': RestartServerCommand,
+            'server_delete': DeleteServerCommand,
+            'server_info': DumpServerInfoCommand,
+            'account': AccountCommand,
+            'profile': ProfileCommand
+        }
+        return cmds[cmd]
 
 
 def build_command(args):
@@ -85,6 +90,9 @@ def main():
 
     command, extra_args = build_command(args)
     logger.debug('extra_args: ' + str(extra_args))
+    if not command:
+        logger.error('No command given')
+        exit(1)
 
     default_zone = config.get('default_zone')
     if not default_zone:
