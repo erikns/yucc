@@ -4,8 +4,16 @@ A CLI for the UpCloud API. Still a work in progress.
 
 ## Installation and configuration
 
+### Install from source
+
 Clone the repository and run `pip install .`, either globally or in a virtual
 environment.
+
+### Install from PyPI
+
+Run `pip install yucc`. You may need to prepend the command with `sudo`
+
+### Configuration
 
 The CLI makes use of a hidden `.yuccrc`-file in your home directory. This is an
 example of what it looks like:
