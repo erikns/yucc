@@ -61,7 +61,6 @@ To list all servers, run: `yucc ls servers`.
 
 ## Todo
 
-- Add to PyPI
 - Tag management, including adding tags on server creation, listing, editing and
   deleting tags.
 - Searching/listing servers based on tags
