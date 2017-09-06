@@ -1,4 +1,8 @@
-.PHONY: develop dist upload-test
+.PHONY: develop dist upload
+
+TWINE_ENV ?= test
+include ~/.twinevars.${TWINE_ENV}
+export $(shell sed 's/=.*//' ~/.twinevars.${TWINE_ENV})
 
 develop:
 	@test -f README.md || (echo "Run make from root project directory!" && exit 1)
@@ -10,10 +14,7 @@ dist:
 	@rm -rf dist
 	@python setup.py sdist
 
-upload-test:
+upload:
 	@test -f README.md || (echo "Run make from root project directory!" && exit 1)
-	@twine upload --repository-url https://test.pypi.org/legacy/ dist/*
-
-upload-production:
-	@test -f README.md || (echo "Run make from root project directory!" && exit 1)
-	@twine upload --repository-url https://pypi.python.org/pypi/ dist/*
+	@echo "Uploading to repository: ${TWINE_REPOSITORY_URL}..."
+	@twine upload --repository-url ${TWINE_REPOSITORY_URL} -u ${TWINE_USERNAME} -p ${TWINE_PASSWORD} dist/*
