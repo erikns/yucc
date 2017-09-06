@@ -14,6 +14,8 @@ def _map_section(config, section):
     return res
 
 def verify_config_permissions(logger):
+    if not os.path.isfile(config_path):
+        raise ValueError("No .yuccrc file found")
     logger.debug("Verifying '{}' permissions...".format(config_path))
     file_mode = str(oct(os.stat(config_path).st_mode)[-3:])
     if file_mode != '600':
