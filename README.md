@@ -59,9 +59,6 @@ storage devices associated with the server, add the `--delete-storages` flag.
 
 To list all servers, run: `yucc ls servers`.
 
-All commands return results in JSON. There is a format option, but it is
-ignored for now.
-
 ## Todo
 
 - Add to PyPI

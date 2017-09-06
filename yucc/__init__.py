@@ -4,7 +4,7 @@
 Copyright (C) Erik Sørensen, 2017.
 
 Usage:
-    yucc ls servers [options] [-t <tags>...]
+    yucc ls servers [options]
     yucc ls templates [options]
     yucc ls zones [options]
     yucc ls plans [options]
@@ -33,12 +33,10 @@ Options:
     --ensure-started           Wait for the server to start when creating the
                                server.
     --delete-storages          Also delete storages when deleting server
-    -f, --format=<format>      Program output format. [default: json]
     -p, --profile=<profile>    Settings profile to use. Read from
                                ~/.yaccrc file. [default: default]
     -P, --prompt-credentials   Prompt for credentials rather than reading
                                them from profile
-    -t, --tags                 Filter on or set tags
     -q, --quiet                Be silent. Only output essential data
     -h, --help                 Show this helpscreen and exit
     -v, --verbose              Verbose output
@@ -52,5 +50,5 @@ Commands:
 
 """
 
-__version__ = '0.7.2'
+__version__ = '0.7.3'
 __prog__ = 'yucc'
