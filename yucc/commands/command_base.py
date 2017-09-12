@@ -96,6 +96,8 @@ class SdkApiBase(CommandBase):
                 raise CommandError('The server does not exist')
             elif e.error_code in ['ZONE_NOT_FOUND', 'SERVER_INVALID']:
                 raise CommandError(e.error_message)
+            elif e.error_code == 'UNAUTHORIZED_ADDRESS':
+                raise CommandError('Your account cannot access the API on this ip address')
             else:
                 self.logger.debug('{}: {}'.format(e.error_code, e.error_message))
                 raise CommandError('Unknown error {} {}'.format(e.error_code, e.error_message))
