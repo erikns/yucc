@@ -3,6 +3,7 @@ import os
 
 config_path = os.path.join(os.path.expanduser('~'), '.yuccrc')
 
+
 def _map_section(config, section):
     res = {}
     options = config.options(section)
@@ -13,6 +14,7 @@ def _map_section(config, section):
             print "Error!"
     return res
 
+
 def verify_config_permissions(logger):
     if not os.path.isfile(config_path):
         raise ValueError("No .yuccrc file found")
@@ -22,6 +24,7 @@ def verify_config_permissions(logger):
         logger.warning("Config file has unsafe file permissions '{}'".format(file_mode))
     else:
         logger.info("Config file permissions are OK '{}'".format(file_mode))
+
 
 def read_config(**kwargs):
     read_creds = kwargs.get('read_creds', True)
@@ -35,7 +38,7 @@ def read_config(**kwargs):
         profile = _map_section(config, profile_name)
     except ConfigParser.NoSectionError:
         raise ValueError("No profile named '{}'. Choices are {}".format(profile_name,
-            config.sections()))
+                         config.sections()))
 
     if profile.get('default_zone'):
         default_zone = profile['default_zone']
@@ -45,6 +48,6 @@ def read_config(**kwargs):
     if read_creds:
         return {'username': profile['username'],
                 'password': profile['password'],
-                'default_zone' : default_zone}
+                'default_zone': default_zone}
     else:
         return {'default_zone': default_zone}
