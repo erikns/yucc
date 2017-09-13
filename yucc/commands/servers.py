@@ -1,6 +1,7 @@
 import upcloud_api
 from .command_base import SdkApiBase, CommandError
 
+
 class ListServersCommand(SdkApiBase):
     def __init__(self, logger, config, **kwargs):
         super(ListServersCommand, self).__init__(logger, config, **kwargs)
@@ -109,19 +110,19 @@ class CreateServerCommand(SdkApiBase):
     def do_command(self):
         loaded_ssh_key = self._load_ssh_keyfile(self.ssh_key)
         user_block = upcloud_api.login_user_block(
-            username = self.login_user,
-            ssh_keys = [loaded_ssh_key],
-            create_password = False
+            username=self.login_user,
+            ssh_keys=[loaded_ssh_key],
+            create_password=False
         )
 
         server = upcloud_api.Server(
-            plan = self.plan,
-            hostname = self.hostname,
-            zone = self.zone,
-            storage_devices = [
+            plan=self.plan,
+            hostname=self.hostname,
+            zone=self.zone,
+            storage_devices=[
                 upcloud_api.Storage(os=self.os, size=10)
             ],
-            login_user = user_block
+            login_user=user_block
         )
         created_server = self._sdk_call(lambda: self._manager.create_server(server))
         if self.ensure_started:

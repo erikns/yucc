@@ -2,6 +2,7 @@ from __future__ import print_function
 import sys
 from colorama import Style, Fore
 
+
 class LogLevel:
     CRIT = -2
     ERROR = -1
@@ -12,7 +13,7 @@ class LogLevel:
 
 
 class Logger:
-    def __init__(self, log_level = LogLevel.NORMAL):
+    def __init__(self, log_level=LogLevel.NORMAL):
         self.log_level = log_level
 
     def debug(self, msg):
@@ -21,7 +22,7 @@ class Logger:
 
     def info(self, msg):
         if self.log_level >= LogLevel.INFO:
-            _print_stderr(Fore.BLUE + '==> '+ msg + Fore.RESET)
+            _print_stderr(Fore.BLUE + '==> ' + msg + Fore.RESET)
 
     def warning(self, msg):
         if self.log_level >= LogLevel.WARN:
@@ -31,20 +32,21 @@ class Logger:
         if self.log_level >= LogLevel.ERROR:
             _print_stderr(Fore.RED + '==> ' + msg + Fore.RESET)
 
-    def critical(self, msg, bright = True):
+    def critical(self, msg, bright=True):
         if self.log_level >= LogLevel.CRIT:
             if bright:
                 _print_stderr(Style.BRIGHT + Fore.RED + '==> ' +
-                    msg + Fore.RESET + Style.RESET_ALL)
+                              msg + Fore.RESET + Style.RESET_ALL)
             else:
                 _print_stderr(Fore.RED + '==> ' + msg + Fore.RESET)
 
-    def normal(self, msg = ''): # for normal output information
+    def normal(self, msg=''):  # for normal output information
         _print_stdout(msg)
 
 
 def _print_stdout(*args, **kwargs):
     print(*args, **kwargs)
+
 
 def _print_stderr(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)

@@ -2,6 +2,7 @@ import json
 import requests
 import upcloud_api
 
+
 class AuthenticationError:
     def __init__(self, msg):
         self.message = msg
@@ -58,7 +59,7 @@ class CommandBase(object):
     def output(self):
         if self._output:
             return json.dumps(self._output, sort_keys=True,
-                    indent=4, separators=(',', ': '))
+                              indent=4, separators=(',', ': '))
         else:
             return json.dumps([])
 
@@ -72,13 +73,14 @@ class RawApiBase(CommandBase):
 
     def _http_get(self, resource):
         response = requests.get(RawApiBase.ROOT_API_ENDPOINT + resource,
-            auth=self._http_auth)
+                                auth=self._http_auth)
         if response.ok:
             return response
         elif response.status_code == 401:
             raise AuthenticationError('Authentication failed with username {}'.format(self.username))
         else:
-            raise CommandError('Generic error executing HTTP request. Response code: {}'.format(response.status_code))
+            raise CommandError('Generic error executing HTTP request. Response code: {}'.format(
+                               response.status_code))
 
 
 class SdkApiBase(CommandBase):

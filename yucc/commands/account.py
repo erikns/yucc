@@ -2,6 +2,7 @@
 import requests
 from .command_base import RawApiBase
 
+
 class AccountCommand(RawApiBase):
     RESOURCE = '/account'
 

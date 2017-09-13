@@ -1,6 +1,7 @@
 import requests
 from .command_base import RawApiBase
 
+
 class ListPlansCommand(RawApiBase):
     RESOURCE = '/plan'
 

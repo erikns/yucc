@@ -1,5 +1,6 @@
 import getpass
 
+
 def credentials_prompt():
     username = raw_input('Username: ')
     password = getpass.getpass('Password: ')
@@ -23,7 +24,7 @@ def strip_keys(collection, strip_chars):
 def exclude_keys(collection, keys):
     result = dict()
     for k, v in collection.items():
-        if not k in keys:
+        if k not in keys:
             result[k] = v
     return result
 
@@ -31,9 +32,10 @@ def exclude_keys(collection, keys):
 def strip_none(collection):
     result = dict()
     for k, v in collection.items():
-        if v != None:
+        if v is not None:
             result[k] = v
     return result
+
 
 def replace_in_keys(collection, old, new):
     result = dict()
