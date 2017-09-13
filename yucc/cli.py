@@ -9,6 +9,7 @@ from .logger import LogLevel, Logger
 from .config import read_config, verify_config_permissions
 from .util import *
 
+
 def determine_log_level(args):
     level = LogLevel.WARN
     if args['--quiet']:
@@ -18,6 +19,7 @@ def determine_log_level(args):
     if args['--debug']:
         level = LogLevel.DEBUG
     return level
+
 
 def get_command(cmd):
     if cmd.startswith('-'):
@@ -45,9 +47,9 @@ def get_command(cmd):
 def build_command(args):
     root_cmds = ['ls', 'server', 'account', 'profile']
     sub_cmds = ['zones', 'templates', 'servers', 'plans',
-        'create', 'start', 'stop', 'restart', 'delete', 'info']
+                'create', 'start', 'stop', 'restart', 'delete', 'info']
     root_args = ['--debug', '--verbose', '--quiet', '--profile',
-        '--prompt-credentials', '--version']
+                 '--prompt-credentials', '--version']
 
     root_command = first_in(args, root_cmds + root_args)
     subcommand = first_in(args, sub_cmds)
@@ -97,7 +99,7 @@ def main():
     default_zone = config.get('default_zone')
     if not default_zone:
         logger.warning('You have not set a default deployment zone. It will' +
-            ' need to be provided.')
+                       ' need to be provided.')
     extra_args['zone'] = default_zone
 
     try:
