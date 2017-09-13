@@ -1,4 +1,4 @@
-.PHONY: develop dist upload
+.PHONY: develop dist upload lint
 
 TWINE_ENV ?= test
 include ~/.twinevars.${TWINE_ENV}
