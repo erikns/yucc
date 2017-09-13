@@ -7,7 +7,10 @@ export $(shell sed 's/=.*//' ~/.twinevars.${TWINE_ENV})
 develop:
 	@test -f README.md || (echo "Run make from root project directory!" && exit 1)
 	@test ${VIRTUAL_ENV} || (echo "Use a virtual environment for development setup" && exit 1)
-	pip install -e .
+	pip install -e .[dev]
+
+lint:
+	@flake8 yucc
 
 dist:
 	@test -f README.md || (echo "Run make from root project directory!" && exit 1)

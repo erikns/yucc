@@ -25,7 +25,9 @@ setup(
     keywords = 'cli upcloud',
     packages = find_packages(exclude=['docs', 'tests*']),
     install_requires = ['upcloud-api', 'colorama', 'docopt'],
-    extras_require = {},
+    extras_require = {
+        'dev': ['flake8', 'flake8-colors']
+    },
     entry_points = {
         'console_scripts': [
             'yucc=yucc.cli:main',
