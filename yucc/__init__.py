@@ -34,7 +34,7 @@ Options:
                                server.
     --delete-storages          Also delete storages when deleting server
     -p, --profile=<profile>    Settings profile to use. Read from
-                               ~/.yaccrc file. [default: default]
+                               ~/.yuccrc file. [default: default]
     -P, --prompt-credentials   Prompt for credentials rather than reading
                                them from profile
     -q, --quiet                Be silent. Only output essential data
