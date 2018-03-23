@@ -4,7 +4,7 @@ from docopt import docopt
 
 from . import __version__, __prog__, __doc__ as __maindoc__
 
-from commands import *
+from .commands import *
 from .logger import LogLevel, Logger
 from .config import read_config, verify_config_permissions
 from .util import *
@@ -69,11 +69,11 @@ def build_command(args):
 def main():
     args = docopt(__maindoc__)
     if args['--debug']:
-        print args
-        print ''
+        print(args)
+        print('')
 
     if args['--version']:
-        print __prog__, 'version', __version__
+        print(__prog__, 'version', __version__)
         exit(0)
 
     try:
@@ -87,7 +87,7 @@ def main():
         else:
             config = read_config(profile=args['--profile'], read_creds=True)
     except ValueError as e:
-        logger.error(e.message)
+        logger.error(e)
         exit(1)
 
     command, extra_args = build_command(args)

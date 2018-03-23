@@ -1,0 +1,5 @@
+docopt
+
+requests
+upcloud_api
+colorama

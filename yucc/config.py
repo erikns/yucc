@@ -1,4 +1,4 @@
-import ConfigParser
+import configparser
 import os
 
 config_path = os.path.join(os.path.expanduser('~'), '.yuccrc')
@@ -11,7 +11,7 @@ def _map_section(config, section):
         try:
             res[option] = config.get(section, option)
         except:
-            print "Error!"
+            print("Error!")
     return res
 
 
@@ -32,11 +32,11 @@ def read_config(**kwargs):
 
     if not os.path.isfile(config_path):
         raise ValueError("No .yuccrc file found")
-    config = ConfigParser.RawConfigParser()
+    config = configparser.RawConfigParser()
     config.read(config_path)
     try:
         profile = _map_section(config, profile_name)
-    except ConfigParser.NoSectionError:
+    except configparser.NoSectionError:
         raise ValueError("No profile named '{}'. Choices are {}".format(profile_name,
                          config.sections()))
 
