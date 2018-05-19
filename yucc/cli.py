@@ -73,7 +73,7 @@ def main():
         print('')
 
     if args['--version']:
-        print(__prog__, 'version', __version__)
+        print(__version__)
         exit(0)
 
     try:
