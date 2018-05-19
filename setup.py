@@ -24,7 +24,7 @@ setup(
     ],
     keywords = 'cli upcloud',
     packages = find_packages(exclude=['docs', 'tests*']),
-    install_requires = ['upcloud-api', 'colorama', 'docopt'],
+    install_requires = ['upcloud-api', 'colorama', 'docopt', 'configparser'],
     extras_require = {
         'dev': ['flake8', 'flake8-colors']
     },
