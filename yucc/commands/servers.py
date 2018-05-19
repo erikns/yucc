@@ -35,7 +35,7 @@ class ListServersCommand(SdkApiBase):
                 matching_tags = matching_tags + 1
         
         if operator == 'one':
-            return matching_tags >= 0
+            return matching_tags >= 1
         elif operator == 'all':
             return matching_tags == len(search_tags)
         else:
