@@ -76,7 +76,7 @@ def main():
         print('')
 
     if args['--version']:
-        print(__version__)
+        print('v' + __version__)
         exit(0)
 
     try:
