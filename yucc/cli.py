@@ -39,6 +39,7 @@ def get_command(cmd):
             'server_delete': DeleteServerCommand,
             'server_info': DumpServerInfoCommand,
             'server_tag': TagServerCommand,
+            'server_untag': UntagServerCommand,
             'account': AccountCommand,
             'profile': ProfileCommand
         }
@@ -48,7 +49,7 @@ def get_command(cmd):
 def build_command(args):
     root_cmds = ['ls', 'server', 'account', 'profile']
     sub_cmds = ['zones', 'templates', 'servers', 'plans',
-                'create', 'start', 'stop', 'restart', 'delete', 'info', 'tag']
+                'create', 'start', 'stop', 'restart', 'delete', 'info', 'tag', 'untag']
     root_args = ['--debug', '--verbose', '--quiet', '--profile',
                  '--prompt-credentials', '--version']
 
@@ -107,7 +108,9 @@ def main():
         cmd = command(logger, config, **extra_args)
         cmd.run()
         if not cmd.has_error():
-            logger.normal(cmd.output())
+            output = cmd.output()
+            if output:
+                logger.normal(output)
         else:
             errors = cmd.errors()
             for error in errors:

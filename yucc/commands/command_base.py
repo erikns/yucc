@@ -36,6 +36,7 @@ class CommandBase(object):
 
         self._errors = []
         self._output = None
+        self._expect_output = True
 
     def run(self):
         try:
@@ -44,6 +45,8 @@ class CommandBase(object):
             self._report_error('Authentication failed')
             self.logger.debug('Exception: {}'.format(e))
         except CommandError as e:
+            self._report_error(str(e))
+        except NotFoundError as e:
             self._report_error(str(e))
         except Exception as e:
             if str(e).startswith('Invalid OS'):
@@ -67,7 +70,7 @@ class CommandBase(object):
         if self._output:
             return json.dumps(self._output, sort_keys=True,
                               indent=4, separators=(',', ': '))
-        else:
+        elif self._expect_output:
             return json.dumps([])
 
 

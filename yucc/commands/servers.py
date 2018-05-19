@@ -166,6 +166,7 @@ class CreateServerCommand(SdkApiBase):
 class TagServerCommand(RawApiBase):
     def __init__(self, logger, config, **kwargs):
         super(TagServerCommand, self).__init__(logger, config, **kwargs)
+        self._expect_output = False
         if not kwargs.get('uuid'):
             raise ValueError('UUID needs to be supplied')
         self.uuid = kwargs.get('uuid')
@@ -204,3 +205,20 @@ class TagServerCommand(RawApiBase):
             return True
         else:
             return False
+
+
+class UntagServerCommand(RawApiBase):
+    def __init__(self, logger, config, **kwargs):
+        super(UntagServerCommand, self).__init__(logger, config, **kwargs)
+        self._expect_output = False
+        if not kwargs.get('uuid'):
+            raise ValueError('UUID needs to be supplied')
+        self.uuid = kwargs.get('uuid')
+        if not kwargs.get('tag_name'):
+            raise ValueError('Tag name needs to be supplied')
+        self.tag_name = kwargs.get('tag_name')
+    
+    def do_command(self):
+        # make sure the server to untag exists first
+        self._http_get('/server/' + self.uuid)
+        self._http_post('/server/' + self.uuid + '/untag/' + self.tag_name, None)
