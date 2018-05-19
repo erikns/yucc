@@ -61,9 +61,7 @@ To list all servers, run: `yucc ls servers`.
 
 ## Todo
 
-- Tag management, including adding tags on server creation, listing, editing and
-  deleting tags.
-- Searching/listing servers based on tags
+- Add tags on server creation
 - IP address management, including listing IPs, assigning, etc...
 - Storage management, attaching, detaching, etc...
 
