@@ -16,6 +16,7 @@ Usage:
     yucc server restart <uuid> [options]
     yucc server delete <uuid> [--delete-storages] [options]
     yucc server info <uuid> [options]
+    yucc server tag <uuid> <tag-name> [options]
     yucc account [options]
     yucc profile [options]
     yucc [options]

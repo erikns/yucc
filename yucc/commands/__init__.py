@@ -6,3 +6,4 @@ from .zones import ListZonesCommand
 from .servers import ListServersCommand, DumpServerInfoCommand, RestartServerCommand
 from .servers import StopServerCommand, StartServerCommand, CreateServerCommand
 from .servers import DeleteServerCommand
+from .servers import TagServerCommand

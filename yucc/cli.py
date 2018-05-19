@@ -38,6 +38,7 @@ def get_command(cmd):
             'server_restart': RestartServerCommand,
             'server_delete': DeleteServerCommand,
             'server_info': DumpServerInfoCommand,
+            'server_tag': TagServerCommand,
             'account': AccountCommand,
             'profile': ProfileCommand
         }
@@ -47,7 +48,7 @@ def get_command(cmd):
 def build_command(args):
     root_cmds = ['ls', 'server', 'account', 'profile']
     sub_cmds = ['zones', 'templates', 'servers', 'plans',
-                'create', 'start', 'stop', 'restart', 'delete', 'info']
+                'create', 'start', 'stop', 'restart', 'delete', 'info', 'tag']
     root_args = ['--debug', '--verbose', '--quiet', '--profile',
                  '--prompt-credentials', '--version']
 

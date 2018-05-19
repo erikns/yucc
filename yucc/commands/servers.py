@@ -1,5 +1,5 @@
 import upcloud_api
-from .command_base import SdkApiBase, CommandError
+from .command_base import SdkApiBase, RawApiBase, CommandError
 
 
 class ListServersCommand(SdkApiBase):
@@ -134,3 +134,46 @@ class CreateServerCommand(SdkApiBase):
         with open(keyfile) as f:
             loaded_key = f.read().strip()
         return loaded_key
+
+
+class TagServerCommand(RawApiBase):
+    def __init__(self, logger, config, **kwargs):
+        super(TagServerCommand, self).__init__(logger, config, **kwargs)
+        if not kwargs.get('uuid'):
+            raise ValueError('UUID needs to be supplied')
+        self.uuid = kwargs.get('uuid')
+        if not kwargs.get('tag_name'):
+            raise ValueError('Tag name needs to be supplied')
+        self.tag_name = kwargs.get('tag_name')
+
+    def do_command(self):
+        # make sure the server to tag exists first
+        self._http_get('/server/' + self.uuid)
+
+        needs_creation = False
+        if self.__tag_exists():
+            self.logger.debug('Tag ' + self.tag_name + ' exists')
+        else:
+            self.logger.debug('TAG ' + self.tag_name + ' DOES NOT EXIST!')
+            needs_creation = True
+
+        if needs_creation:
+            newtag_data = {
+                'tag': {
+                    'name': self.tag_name
+                }
+            }
+            self._http_post('/tag', newtag_data)
+            self.logger.debug('TAG created')
+
+        self._http_post('/server/' + self.uuid + '/tag/' + self.tag_name, None)
+
+    def __tag_exists(self):
+        tags_response = self._http_get('/tag')
+        existing_tags = tags_response.json()['tags']['tag']
+
+        requested_tag = [tag for tag in existing_tags if tag['name'] == self.tag_name]
+        if len(requested_tag) == 1:
+            return True
+        else:
+            return False

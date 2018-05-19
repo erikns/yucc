@@ -18,6 +18,13 @@ class CommandError:
     def __str__(self):
         return self.message
 
+class NotFoundError:
+    def __init__(self, msg):
+        self.message = msg
+
+    def __str__(self):
+        return self.message
+
 
 class CommandBase(object):
     def __init__(self, logger, config, **kwargs):
@@ -78,9 +85,24 @@ class RawApiBase(CommandBase):
             return response
         elif response.status_code == 401:
             raise AuthenticationError('Authentication failed with username {}'.format(self.username))
+        elif response.status_code == 404:
+            raise NotFoundError('Resource not found')
         else:
             raise CommandError('Generic error executing HTTP request. Response code: {}'.format(
                                response.status_code))
+
+    def _http_post(self, resource, data):
+        response = requests.post(RawApiBase.ROOT_API_ENDPOINT + resource, json=data, auth=self._http_auth)
+
+        if response.ok:
+            return response
+        elif response.status_code == 401:
+            raise AuthenticationError('Authentication failed with username {}'.format(self.username))
+        elif response.status_code == 404:
+            raise NotFoundError('Resource not found')
+        else:
+            raise CommandError('Generic error executing HTTP request. Response code: {}'.format(
+                                response.status_code))
 
 
 class SdkApiBase(CommandBase):
