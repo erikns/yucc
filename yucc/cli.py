@@ -32,6 +32,7 @@ def get_command(cmd):
             'ls_templates': ListTemplatesCommand,
             'ls_servers': ListServersCommand,
             'ls_plans': ListPlansCommand,
+            'ls_tags': ListTagsCommand,
             'server_create': CreateServerCommand,
             'server_start': StartServerCommand,
             'server_stop': StopServerCommand,
@@ -49,7 +50,7 @@ def get_command(cmd):
 def build_command(args):
     root_cmds = ['ls', 'server', 'account', 'profile']
     sub_cmds = ['zones', 'templates', 'servers', 'plans',
-                'create', 'start', 'stop', 'restart', 'delete', 'info', 'tag', 'untag']
+                'create', 'start', 'stop', 'restart', 'delete', 'info', 'tag', 'untag', 'tags']
     root_args = ['--debug', '--verbose', '--quiet', '--profile',
                  '--prompt-credentials', '--version']
 

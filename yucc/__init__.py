@@ -8,6 +8,7 @@ Usage:
     yucc ls templates [options]
     yucc ls zones [options]
     yucc ls plans [options]
+    yucc ls tags [options]
     yucc server create (--hostname=<hostname>) (--plan=<plan>)
       (--login-user=<user> --ssh-key=<ssh-key>) (--os=<os>)
       [--ensure-started] [options]
@@ -48,7 +49,7 @@ Options:
     --version                  Print version and exit
 
 Commands:
-    ls                         List resources (servers, templates, zones, plans)
+    ls                         List resources (servers, templates, zones, plans, tags)
     account                    Show basic account information
     profile                    Dump profile information
 
