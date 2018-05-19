@@ -33,7 +33,7 @@ class ListServersCommand(SdkApiBase):
         for tag in search_tags:
             if tag in server_tags:
                 matching_tags = matching_tags + 1
-        
+
         if operator == 'one':
             return matching_tags >= 1
         elif operator == 'all':
@@ -217,7 +217,7 @@ class UntagServerCommand(RawApiBase):
         if not kwargs.get('tag_name'):
             raise ValueError('Tag name needs to be supplied')
         self.tag_name = kwargs.get('tag_name')
-    
+
     def do_command(self):
         # make sure the server to untag exists first
         self._http_get('/server/' + self.uuid)

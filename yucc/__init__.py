@@ -36,8 +36,10 @@ Options:
     --ensure-started           Wait for the server to start when creating the
                                server.
     --delete-storages          Also delete storages when deleting server
-    --tags=<filter_tags>       When listing servers with ls servers, only show elements with these tags (logic OR)
-    --tags-operator=<op>       When matching tags, require all or one tag to be present ('all' or 'one') [default: one]
+    --tags=<filter_tags>       When listing servers with ls servers, only show elements
+                               with these tags (logic OR)
+    --tags-operator=<op>       When matching tags, require all or one tag to be present
+                               ('all' or 'one') [default: one]
     -p, --profile=<profile>    Settings profile to use. Read from
                                ~/.yuccrc file. [default: default]
     -P, --prompt-credentials   Prompt for credentials rather than reading
@@ -55,5 +57,9 @@ Commands:
 
 """
 
+<<<<<<< HEAD
 __version__ = '0.8.1-DEV'
+=======
+__version__ = '0.8.0'
+>>>>>>> rel-v0.8.0
 __prog__ = 'yucc'

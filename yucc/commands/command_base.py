@@ -18,6 +18,7 @@ class CommandError:
     def __str__(self):
         return self.message
 
+
 class NotFoundError:
     def __init__(self, msg):
         self.message = msg
@@ -105,7 +106,7 @@ class RawApiBase(CommandBase):
             raise NotFoundError('Resource not found')
         else:
             raise CommandError('Generic error executing HTTP request. Response code: {}'.format(
-                                response.status_code))
+                response.status_code))
 
 
 class SdkApiBase(CommandBase):
