@@ -57,9 +57,5 @@ Commands:
 
 """
 
-<<<<<<< HEAD
 __version__ = '0.8.1-DEV'
-=======
-__version__ = '0.8.0'
->>>>>>> rel-v0.8.0
 __prog__ = 'yucc'
