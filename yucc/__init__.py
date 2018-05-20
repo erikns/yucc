@@ -57,5 +57,5 @@ Commands:
 
 """
 
-__version__ = '0.8.2-DEV'
+__version__ = '0.8.2'
 __prog__ = 'yucc'
