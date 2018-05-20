@@ -3,7 +3,7 @@ import requests
 import upcloud_api
 
 
-class AuthenticationError:
+class AuthenticationError(BaseException):
     def __init__(self, msg):
         self.message = msg
 
@@ -11,7 +11,7 @@ class AuthenticationError:
         return self.message
 
 
-class CommandError:
+class CommandError(BaseException):
     def __init__(self, msg):
         self.message = msg
 
@@ -19,7 +19,7 @@ class CommandError:
         return self.message
 
 
-class NotFoundError:
+class NotFoundError(BaseException):
     def __init__(self, msg):
         self.message = msg
 

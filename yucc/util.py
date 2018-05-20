@@ -1,8 +1,9 @@
 import getpass
+import six
 
 
 def credentials_prompt():
-    username = input('Username: ')
+    username = six.moves.input('Username: ')
     password = getpass.getpass('Password: ')
     return {'username': username, 'password': password}
 
