@@ -19,6 +19,9 @@ class ListServersCommand(SdkApiBase):
         self._output = result
 
     def _satisfies_tags(self, server, **kwargs):
+        if not self.tags:
+            return True
+        
         operator = self.tags_op
         self.logger.debug('operator: ' + operator)
 
