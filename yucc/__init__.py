@@ -52,6 +52,7 @@ Options:
 
 Commands:
     ls                         List resources (servers, templates, zones, plans, tags)
+    server                     Perform actions on servers
     account                    Show basic account information
     profile                    Dump profile information
 
