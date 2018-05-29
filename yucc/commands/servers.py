@@ -5,19 +5,17 @@ from .command_base import SdkApiBase, RawApiBase, CommandError
 class ListServersCommand(SdkApiBase):
     def __init__(self, logger, config, **kwargs):
         super(ListServersCommand, self).__init__(logger, config, **kwargs)
-        self.tags = kwargs.get('tags')
+        self.tags = kwargs.get('tags').split(',') if kwargs.get('tags') else None
         self.tags_op = kwargs.get('tags_operator', 'one')
 
     def do_command(self):
-        if self.tags:
-            tags = self.tags.split(',')
-        if not tags:
+        if not self.tags:
             servers = self._sdk_call(lambda: self._manager.get_servers())
         else:
             if self.tags_op == 'one':
-                servers = self._sdk_call(lambda: self._manager.get_servers(False, tags))
+                servers = self._sdk_call(lambda: self._manager.get_servers(False, self.tags))
             elif self.tags_op == 'all':
-                servers = self._sdk_call(lambda: self._manager.get_servers(False, None, tags))
+                servers = self._sdk_call(lambda: self._manager.get_servers(False, None, self.tags))
             else:
                 raise CommandError('Invalid tags operator "{}"'.format(self.tags_op))
         result = list()
