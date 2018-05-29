@@ -9,41 +9,23 @@ class ListServersCommand(SdkApiBase):
         self.tags_op = kwargs.get('tags_operator', 'one')
 
     def do_command(self):
-        servers = self._sdk_call(lambda: self._manager.get_servers())
+        if self.tags:
+            tags = self.tags.split(',')
+        if not tags:
+            servers = self._sdk_call(lambda: self._manager.get_servers())
+        else:
+            if self.tags_op == 'one':
+                servers = self._sdk_call(lambda: self._manager.get_servers(False, tags))
+            elif self.tags_op == 'all':
+                servers = self._sdk_call(lambda: self._manager.get_servers(False, None, tags))
+            else:
+                raise CommandError('Invalid tags operator "{}"'.format(self.tags_op))
         result = list()
 
         # seems hacky :/ maybe move this to base class?
         for server in servers:
-            if self._satisfies_tags(server):
-                result.append(server.to_dict())
+            result.append(server.to_dict())
         self._output = result
-
-    def _satisfies_tags(self, server, **kwargs):
-        if not self.tags:
-            return True
-        
-        operator = self.tags_op
-        self.logger.debug('operator: ' + operator)
-
-        tags_list = self.tags.split(',')
-        search_tags = set(tags_list)
-        self.logger.debug(search_tags)
-
-        server_tags = set(server.tags)
-        self.logger.debug(server_tags)
-
-        matching_tags = 0
-        for tag in search_tags:
-            if tag in server_tags:
-                matching_tags = matching_tags + 1
-
-        if operator == 'one':
-            return matching_tags >= 1
-        elif operator == 'all':
-            return matching_tags == len(search_tags)
-        else:
-            self.logger.warning('Unsupported operator ' + operator + '. Ignoring tags!')
-            return True
 
 
 class DumpServerInfoCommand(SdkApiBase):
